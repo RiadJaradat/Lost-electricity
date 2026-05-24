@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <array>
 #include <iostream>
+#include <vector>
 
 #include "Sprite.hpp"
 #include "battery.hpp"
@@ -42,7 +43,7 @@ public:
 
   Harvester harvester;
 
-  Farm(Battery &battery) : harvester(battery) {
+  Farm(std::vector<std::unique_ptr<Battery>> &batteries) : harvester(batteries) {
 
     for (int x = 0; x < tiles.size(); ++x) {
       for (int y = 0; y < tiles[x].size(); ++y) {

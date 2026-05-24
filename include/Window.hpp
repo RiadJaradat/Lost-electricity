@@ -3,8 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <cmath>
+#include <cstddef>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "Bar.hpp"
 #include "Text.hpp"
@@ -22,7 +24,7 @@ public:
   island land;
   Player player;
   Farm farm;
-  Battery battery;
+  std::vector<std::unique_ptr<Battery>> bateries;
   Text WheatText;
   Text AppleText;
   Timer PowerHourFrequncy;
@@ -31,7 +33,7 @@ public:
 
   Window(const sf::VideoMode &VM, std::string title,
          sf::Uint32 style = sf::Style::Default)
-      : sf::RenderWindow(VM, title, style), vm(VM), farm(battery) {
+      : sf::RenderWindow(VM, title, style), vm(VM), farm(bateries) {
     Cammera.setSize(static_cast<float>(vm.width),
                     static_cast<float>(vm.height));
     setView(Cammera);
@@ -43,6 +45,9 @@ public:
     PowerHourLeftTime.setScale(3 * settings::SCALE, settings::SCALE);
     PowerHourLeftTime.warning_color = sf::Color(29, 102, 171);
     PowerHourLeftTime.default_color = sf::Color(191, 161, 52);
+
+    bateries.push_back(std::make_unique<Battery>());
+    bateries.push_back(std::make_unique<Battery>());
   }
 
   sf::Clock clock;
@@ -69,10 +74,12 @@ public:
 
       // *TODO: chang to for (auto b : batteries) { ... }
 
-      battery.Copasity += 10.f;
+      for (const auto &battery : bateries) {
+        battery->Copasity += 10.f;
 
-      if (battery.Copasity >= battery.maxCapacity) {
-        battery.Copasity = battery.maxCapacity;
+        if (battery->Copasity >= battery->maxCapacity) {
+          battery->Copasity = battery->maxCapacity;
+        }
       }
 
       float timeRemaining =
@@ -104,7 +111,10 @@ public:
     farm.setPosition(land.getIndex(
         {(int)std::round(land.tiles.size() - farm.size.x - 1),
          (int)std::round(land.tiles[0].size() - farm.size.y - 1)}));
-    battery.setPosition(land.getIndex({1, 5}));
+    
+    for (size_t i = 0; i < bateries.size(); ++i) {
+      bateries[i]->setPosition(land.getIndex({1, static_cast<int>(5 + i + 1)}));
+    }
     PowerHourLeftTime.setPosition({(float)vm.width / 2, (float)vm.height - 20});
 
     WheatText.setPos({10, 10});
@@ -144,8 +154,10 @@ public:
       clear(sf::Color(24, 152, 184));
       draw(land);
       draw(farm);
-      draw(battery);
-      draw(battery.powerBar);
+      for (const auto &battery : bateries) {
+        draw(*battery);
+        draw(battery->powerBar);
+      }
 
       setView(getDefaultView()); // FIXED: Switches viewport to pixel-perfect
                                  // screen coords

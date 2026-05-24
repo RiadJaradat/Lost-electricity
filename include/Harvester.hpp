@@ -3,6 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <array>
+#include <cstddef>
+#include <memory>
+#include <vector>
 
 #include "Bar.hpp"
 #include "Sprite.hpp"
@@ -14,7 +17,7 @@ class Harvester : public Sprite {
 public:
   Timer onPlant;
   Timer onCharge;
-  Battery &battery;
+  std::vector<std::unique_ptr<Battery>> &batteries;
 
   sf::Vector2f offset = {30, 20.f};
   sf::Vector2i farm_i = {0, 0};
@@ -28,7 +31,7 @@ public:
 
   ProgressBar powerBar;
 
-  Harvester(Battery &btry) : battery(btry) {
+  Harvester(std::vector<std::unique_ptr<Battery>> &btries) : batteries(btries) {
     from_path_to_txt("../Assets/Characters/Tools.png");
 
     setTextureRect(sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 0,
@@ -70,18 +73,38 @@ public:
   }
 
   template <size_t X, size_t Y>
-  void update(float dt, std::array<std::array<Plant, X>, Y> &plants, int &wheat_count, int &apple_count,
-              sf::Vector2f farmPosition) {
+  void update(float dt, std::array<std::array<Plant, X>, Y> &plants,
+              int &wheat_count, int &apple_count, sf::Vector2f farmPosition) {
 
     if (power <= 0) {
 
-      if (fly_to(battery.getPosition() - farmPosition + offset, dt)) {
+      Battery *battery = nullptr;
+      int heightest_cop = -1.f;
 
-        onCharge.TimePassed += dt;
+      for (size_t i = 0; i < batteries.size(); ++i) {
+        if (batteries[i]->Copasity > heightest_cop) {
+          heightest_cop = batteries[i]->Copasity;
+          battery =
+              batteries[i].get(); // Store the real object's memory address
+        }
+      }
 
-        if (onCharge.TimePassed > onCharge.maxTime) {
-          battery.take(power);
-          onCharge.TimePassed = 0.f;
+      if (battery != nullptr) {
+        if (fly_to(battery->getPosition() - farmPosition + offset, dt)) {
+
+          onCharge.TimePassed += dt;
+
+          if (onCharge.TimePassed > onCharge.maxTime) {
+            float incomingEnergy = 0.f;
+            battery->take(incomingEnergy);
+
+            // Safely apply and clamp the energy transfer
+            power += incomingEnergy;
+            if (power > maxPower) {
+              power = maxPower; // Keeps the harvester strictly at 10.f max
+            }
+            onCharge.TimePassed = 0.f;
+          }
         }
       }
 
