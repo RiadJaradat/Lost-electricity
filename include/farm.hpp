@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 #include <array>
 #include <iostream>
 #include <vector>
@@ -126,14 +128,14 @@ public:
     return tiles[grid_i.x][grid_i.y].getPosition();
   }
 
-  void update(float dt, int &wheat_count, int &apple_count) {
+  void update(float dt, int &wheat_count, int &apple_count, sf::RenderWindow &window, sf::View *v) {
     for (auto &plantArray : plants) {
       for (Plant &p : plantArray) {
         p.update(dt);
       }
     }
 
-    harvester.update(dt, plants, wheat_count, apple_count, getPosition());
+    harvester.update(dt, plants, wheat_count, apple_count, getPosition(), window, v);
   }
 
 };

@@ -7,6 +7,7 @@ struct settings {
     inline static const int TILE_SIZE = 16;
     inline static const int SCALE = 3;
     inline static const int DISPLAY_SCALE = SCALE * TILE_SIZE;
+    inline static const float PLANT_RATIO = 0.50;
 };
 
 template <typename T>

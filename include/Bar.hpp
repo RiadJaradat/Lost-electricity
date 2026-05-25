@@ -1,7 +1,9 @@
 #pragma once
 
+#include "properties.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 // *TODO: needs a style rework
 
@@ -42,24 +44,34 @@ public:
     default_color = fgCol;
   }
 
-  // Updates the inner bar's visual scaling based on a new current value
-  void updateValue(float value) {
-    // Clamp the value between 0 and m_maxValue to prevent drawing backwards or
-    // out of bounds
+  // Added an optional targetView parameter that defaults to the window's
+  // current active view
+  void updateValue(float value, sf::RenderWindow &window,
+                   const sf::View *targetView) {
     m_currentValue = std::max(0.f, std::min(value, m_maxValue));
-
-    // Calculate progress percentage
     float percentage = m_currentValue / m_maxValue;
 
-    if (percentage <= 0.2)
-      m_foreground.setFillColor(warning_color);
-    else
-      m_foreground.setFillColor(default_color);
-
-    // Scale the width of the foreground bar dynamically
     sf::Vector2f currentSize = m_background.getSize();
     m_foreground.setSize(
         sf::Vector2f(currentSize.x * percentage, currentSize.y));
+
+    sf::Color baseColor = (percentage <= 0.2f) ? warning_color : default_color;
+
+    sf::Vector2i mousePixelPos = sf::Mouse::getPosition(window);
+
+    // FIXED: Convert pixels using the specific view context if one is provided
+    sf::Vector2f mouseWorldPos =
+        targetView ? window.mapPixelToCoords(mousePixelPos, *targetView)
+                   : window.mapPixelToCoords(mousePixelPos);
+
+    sf::FloatRect barBounds =
+        getTransform().transformRect(m_background.getGlobalBounds());
+
+    if (barBounds.contains(mouseWorldPos)) {
+      m_foreground.setFillColor(sf::Color(100, 100, 100));
+    } else {
+      m_foreground.setFillColor(baseColor);
+    }
   }
 
   void centerOrigin() {

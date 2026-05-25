@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <array>
 #include <cstddef>
@@ -74,7 +76,7 @@ public:
 
   template <size_t X, size_t Y>
   void update(float dt, std::array<std::array<Plant, X>, Y> &plants,
-              int &wheat_count, int &apple_count, sf::Vector2f farmPosition) {
+              int &wheat_count, int &apple_count, sf::Vector2f farmPosition, sf::RenderWindow &window, sf::View *v) {
 
     if (power <= 0) {
 
@@ -96,7 +98,7 @@ public:
 
           if (onCharge.TimePassed > onCharge.maxTime) {
             float incomingEnergy = 0.f;
-            battery->take(incomingEnergy);
+            battery->take(incomingEnergy, window, v);
 
             // Safely apply and clamp the energy transfer
             power += incomingEnergy;
@@ -106,13 +108,13 @@ public:
             onCharge.TimePassed = 0.f;
           }
         }
-      }
+      } 
 
       return;
     }
 
     power -= dt;
-    powerBar.updateValue(power);
+    powerBar.updateValue(power, window, v);
 
     if (fly_to(plants[farm_i.x][farm_i.y].getPosition() + offset, dt)) {
 

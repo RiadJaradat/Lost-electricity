@@ -5,7 +5,9 @@
 #include <SFML/System/Vector2.hpp>
 #include <array>
 #include <iostream>
+#include <new>
 #include <ostream>
+#include <vector>
 
 #include "Sprite.hpp"
 #include "properties.hpp"
@@ -34,13 +36,12 @@ public:
   constexpr static int islandSize[2] = {20, 10};
 
   std::array<std::array<Sprite, islandSize[1]>, islandSize[0]> tiles;
+  std::vector<sf::Vector2f> taken; //! Vecotr where it can be array!
 
   sf::Vector2f size;
 
   island() {
     // init & load
-
-    // children.reserve(100);
 
     for (int x = 0; x < tiles.size(); ++x) {
       for (int y = 0; y < tiles[x].size(); ++y) {
@@ -95,6 +96,8 @@ public:
 
     size.x = settings::DISPLAY_SCALE * tiles.size();
     size.y = settings::DISPLAY_SCALE * tiles[0].size();
+
+    taken.reserve(islandSize[0] * islandSize[1]);
   }
 
   void setPosition(sf::Vector2f pos) {
@@ -111,7 +114,7 @@ public:
     }
   }
 
-  sf::Vector2f getIndex(sf::Vector2i grid_i) {
+  sf::Vector2f getIndex(sf::Vector2i grid_i, bool markAsTaken = true) {
 
     if (grid_i.x < 0 || grid_i.x >= tiles.size()) {
       std::cerr << "Invalid position on x axis: " << grid_i.x << std::endl;
@@ -120,23 +123,33 @@ public:
       std::cerr << "Invalid position on y axis: " << grid_i.y << std::endl;
     }
 
+    if (markAsTaken) {
+      for (sf::Vector2f &s : taken) {
+        if (s == tiles[grid_i.x][grid_i.y].getPosition()) {
+          std::cerr << "cannot allocate memory in taken position" << std::endl;
+          throw std::bad_alloc();
+        }
+      }
+    }
+
+    taken.push_back(tiles[grid_i.x][grid_i.y].getPosition());
+
     return tiles[grid_i.x][grid_i.y].getPosition();
   }
 
-  // template <typename T> void draw(T drw, sf::Vector2i grid_i) {
-  //   if (grid_i.x < 0 || grid_i.x >= tiles.size()) {
-  //     std::cerr << "Invalid position on x axis: " << grid_i.x << std::endl;
-  //     return;
-  //   }
-  //   if (grid_i.y < 0 || grid_i.y >= tiles[0].size()) {
-  //     std::cerr << "Invalid position on y axis: " << grid_i.y << std::endl;
-  //     return;
-  //   }
+  template <typename iterable> void markAsTaken(iterable &List) {
 
-  //   sf::Vector2f act_pos = tiles[grid_i.x][grid_i.y].getPosition();
+    for (Sprite &l : List) {
+      for (sf::Vector2f &s : taken) {
+        if (l.getPosition() == s) {
+          std::cerr << "cannot allocate memory in taken position" << std::endl;
+          throw std::bad_alloc();
+        }
+      }
 
-  //   drw.setPosition(act_pos);
+      taken.push_back(l.getPosition());
 
-  //   children.push_back(std::make_unique<T>(drw));
-  // }
+    }
+
+  }
 };

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 
 #include "Bar.hpp"
 #include "Sprite.hpp"
@@ -26,17 +28,17 @@ public:
                   sf::Color(50, 168, 82), maxCapacity);
   }
 
-  void take(float &harvester_power) {
+  void take(float &harvester_power, sf::RenderWindow &window, sf::View *v) {
     Copasity -= give_ammount;
 
     if (Copasity >= 0) {
       harvester_power += give_ammount;
-      powerBar.updateValue(Copasity);
+      powerBar.updateValue(Copasity, window, v);
       return;
     }
 
     Copasity = 0.f; // Clamp to 0
-    powerBar.updateValue(Copasity);
+    powerBar.updateValue(Copasity, window, v);
     // *TODO: make a visuall indicator that indicates that the power of the
     // battery is not enough
   }
