@@ -15,9 +15,10 @@ public:
   float give_ammount = 50;
 
   ProgressBar powerBar;
+  Timer digration;
 
   Battery() {
-    from_path_to_txt("../Assets/Objects/Basic Furniture.png");
+    from_path_to_txt(ASSETS "/Objects/Basic Furniture.png");
 
     setTextureRect(sf::IntRect(settings::TILE_SIZE * 5, settings::TILE_SIZE * 3,
                                settings::TILE_SIZE, settings::TILE_SIZE));
@@ -26,6 +27,8 @@ public:
 
     powerBar.init(sf::Vector2f(50.f, 8.f), sf::Color(50, 50, 50),
                   sf::Color(50, 168, 82), maxCapacity);
+
+    digration.maxTime = 60.f;
   }
 
   void take(float &harvester_power, sf::RenderWindow &window, sf::View *v) {
@@ -48,6 +51,16 @@ public:
 
     // Position the bar slightly above the battery texture (e.g., 15 pixels up)
     powerBar.setPosition(pos.x, pos.y - 15.f);
+  }
+
+  void update(float dt) {
+    digration.TimePassed += dt;
+
+    if (digration.TimePassed > digration.maxTime) {
+      digration.TimePassed = 0.f;
+      maxCapacity -= 10.f;
+    }
+
   }
 
 };

@@ -34,7 +34,7 @@ public:
   ProgressBar powerBar;
 
   Harvester(std::vector<std::unique_ptr<Battery>> &btries) : batteries(btries) {
-    from_path_to_txt("../Assets/Characters/Tools.png");
+    from_path_to_txt(ASSETS"/Characters/Tools.png");
 
     setTextureRect(sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 0,
                                settings::TILE_SIZE, settings::TILE_SIZE));

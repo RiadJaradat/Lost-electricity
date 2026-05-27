@@ -31,7 +31,7 @@ public:
 
   Plant() {
 
-    from_path_to_txt("../Assets/Objects/Basic_Plants.png");
+    from_path_to_txt(ASSETS"/Objects/Basic_Plants.png");
 
     growth.maxTime = genRand<float>(6.f, 12.f);
     watered.maxTime = genRand<float>(18.f, 24.f);

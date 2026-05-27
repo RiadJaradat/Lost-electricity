@@ -201,6 +201,10 @@ public:
       store.isClicked = !store.isClicked;
     }
     wasMousePressedLastFrame = isMousePressedThisFrame;
+
+    for (auto &b : bateries)
+      b->update(dt);
+
   }
 
   void gameLoop() {

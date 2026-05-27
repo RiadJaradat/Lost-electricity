@@ -2,6 +2,8 @@
 
 #include <random>
 
+#define ASSETS "../Assets/"
+
 struct settings {
     inline static const int FPS = 60;
     inline static const int TILE_SIZE = 16;

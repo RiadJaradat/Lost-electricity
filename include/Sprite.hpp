@@ -13,5 +13,4 @@ public:
   Sprite() {};
   Sprite(const std::string &path) { from_path_to_txt(path); };
   Sprite(const sf::Texture &txt) { set_texture(txt); };
-  Sprite(const sf::Sprite &sprite, sf::Texture &txt) {};
 };

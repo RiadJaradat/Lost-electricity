@@ -47,7 +47,7 @@ public:
       for (int y = 0; y < tiles[x].size(); ++y) {
         Sprite &s = tiles[x][y];
 
-        s.from_path_to_txt("../Assets/Tilesets/Grass.png");
+        s.from_path_to_txt(ASSETS"/Tilesets/Grass.png");
 
         if (x == 0 && y == 0) {
           s.setTextureRect(

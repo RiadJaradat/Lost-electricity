@@ -1,36 +1,25 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Rect.hpp>
-#include <vector>
-
 #include "Sprite.hpp"
 #include "properties.hpp"
 
-class UI_element : public Sprite {
-private:
-  void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
-    target.draw(static_cast<Sprite>(*this), states);
+#include <vector>
 
-    for (auto &s : children)
-      target.draw(*s, states);
+class ui_element : public Sprite {
+private:
+  std::vector<sf::Drawable *> children;
+  void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
+    target.draw((Sprite)(*this), states);
+    for (auto &d : children)
+      target.draw(*d, states);
   }
 
 public:
-  std::vector<sf::Drawable *> children;
-
-  bool isApple = false;
-
-  UI_element() { from_path_to_txt("../Assets/UI/UI.png"); }
-
-  void setRect() {
-    setTextureRect(sf::IntRect(settings::TILE_SIZE * 1,
-                               settings::TILE_SIZE * (int)isApple,
-                               settings::TILE_SIZE * 2, settings::TILE_SIZE));
+  ui_element() {
+    from_path_to_txt(ASSETS "/UI/UI.png");
+    setTextureRect(sf::IntRect(settings::TILE_SIZE, 0, settings::TILE_SIZE * 2,
+                               settings::TILE_SIZE));
+    setScale(settings::SCALE, settings::SCALE);
   }
-  void setSquare() {
-    setTextureRect(sf::IntRect(settings::TILE_SIZE * 0,
-                               settings::TILE_SIZE * (int)isApple,
-                               settings::TILE_SIZE, settings::TILE_SIZE));
-  }
+  void add_chiled(sf::Drawable &d) { children.push_back(&d); }
 };

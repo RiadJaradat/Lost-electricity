@@ -19,7 +19,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system)
 
 target_compile_options(${PROJECT_NAME} PRIVATE 
-    -O3 
+    -O3
     -Ofast 
     -ffast-math 
     -march=native # best run in Intel (tm) core i7 gen 8, its compiled source.
