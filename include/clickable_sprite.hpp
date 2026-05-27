@@ -1,16 +1,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Window/Mouse.hpp>
 
-#include "Sprite.hpp"
-
-class Clickable : public Sprite {
+class Clickable : public sf::Sprite {
 private:
   bool m_isHovered = false;
 
 public:
-  Clickable() : Sprite() {}
+  Clickable() {} 
 
   // Pass a reference to the window, and a pointer to the specific view this
   // sprite belongs to

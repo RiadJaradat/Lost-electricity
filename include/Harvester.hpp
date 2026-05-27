@@ -9,13 +9,13 @@
 #include <memory>
 #include <vector>
 
+#include "AssetsManeger.hpp"
 #include "Bar.hpp"
-#include "Sprite.hpp"
 #include "battery.hpp"
 #include "plant.hpp"
 #include "properties.hpp"
 
-class Harvester : public Sprite {
+class Harvester : public sf::Sprite {
 public:
   Timer onPlant;
   Timer onCharge;
@@ -34,7 +34,7 @@ public:
   ProgressBar powerBar;
 
   Harvester(std::vector<std::unique_ptr<Battery>> &btries) : batteries(btries) {
-    from_path_to_txt(ASSETS"/Characters/Tools.png");
+    setTexture(Assets::ToolTile);
 
     setTextureRect(sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 0,
                                settings::TILE_SIZE, settings::TILE_SIZE));

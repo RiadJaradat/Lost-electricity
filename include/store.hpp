@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AssetsManeger.hpp"
 #include "UI.hpp"
 #include "clickable_sprite.hpp"
 #include "player_obj.hpp"
@@ -12,16 +13,16 @@
 class Store : public Clickable {
 private:
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
-    target.draw((Sprite)(*this), states);
+    target.draw((sf::Sprite)(*this), states);
     if (isClicked)
       target.draw(store_ui, states);
   }
 
 public:
-  ui_element store_ui;
+  ui_element store_ui; 
 
   Store() {
-    from_path_to_txt(ASSETS "/Objects/Chest.png");
+    setTexture(Assets::BoxTile);
     setTextureRect(sf::IntRect(settings::TILE_SIZE, settings::TILE_SIZE,
                                settings::TILE_SIZE, settings::TILE_SIZE));
     setScale(settings::SCALE, settings::SCALE);

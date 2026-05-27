@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
-#include "Sprite.hpp"
+#include "AssetsManeger.hpp"
 #include "properties.hpp"
 
 enum Ripeness {
@@ -13,13 +13,13 @@ enum Ripeness {
   RIPE = 4  // *RIPE: the plant when it is fully grown
 };
 
-class Plant : public Sprite {
+class Plant : public sf::Sprite {
 public:
   Ripeness state = Ripeness::SEED;
 
   Timer growth;
   Timer watered;
-
+ 
 //   float TimePassed = 0.f;
 //   float growthTime = 10.f;
 //   float drayTime = 20.f;
@@ -31,7 +31,7 @@ public:
 
   Plant() {
 
-    from_path_to_txt(ASSETS"/Objects/Basic_Plants.png");
+    setTexture(Assets::cropTile);
 
     growth.maxTime = genRand<float>(6.f, 12.f);
     watered.maxTime = genRand<float>(18.f, 24.f);

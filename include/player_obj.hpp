@@ -5,9 +5,9 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 
-#include "Sprite.hpp"
+#include "Text.hpp"
 
-class Player : public Sprite {
+class Player : public sf::Sprite {
 private:
   sf::Vector2f target_pos;
   float arrival_radius = 5.f;
@@ -21,6 +21,9 @@ public:
   float max_speed = 300.f;
   float acceleration = 1000.f;
   float friction = 2.f; // Higher number = stops faster
+
+  int wheat_count = 0;
+  int apple_count = 0;
 
   bool has_target = false;
 

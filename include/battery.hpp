@@ -2,23 +2,24 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/View.hpp>
 
+#include "AssetsManeger.hpp"
 #include "Bar.hpp"
-#include "Sprite.hpp"
 #include "properties.hpp"
 
-class Battery : public Sprite {
+class Battery : public sf::Sprite {
 public:
   float Copasity = 200.f;
   float maxCapacity = 200.f;
   float give_ammount = 50;
 
-  ProgressBar powerBar;
+  ProgressBar powerBar; 
   Timer digration;
 
   Battery() {
-    from_path_to_txt(ASSETS "/Objects/Basic Furniture.png");
+    setTexture(Assets::FurnitureTile);
 
     setTextureRect(sf::IntRect(settings::TILE_SIZE * 5, settings::TILE_SIZE * 3,
                                settings::TILE_SIZE, settings::TILE_SIZE));

@@ -9,7 +9,7 @@
 #include <ostream>
 #include <vector>
 
-#include "Sprite.hpp"
+#include "AssetsManeger.hpp"
 #include "properties.hpp"
 
 class island : public sf::Drawable {
@@ -19,7 +19,7 @@ private:
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
 
     for (auto &sprtArray : tiles) {
-      for (const Sprite &s : sprtArray) {
+      for (const sf::Sprite &s : sprtArray) {
         target.draw(s, states);
       }
     }
@@ -30,24 +30,24 @@ private:
   }
 
 public:
-  Sprite sprt;
+  sf::Sprite sprt;
   int tile_size = 10;
 
   constexpr static int islandSize[2] = {20, 10};
 
-  std::array<std::array<Sprite, islandSize[1]>, islandSize[0]> tiles;
+  std::array<std::array<sf::Sprite, islandSize[1]>, islandSize[0]> tiles;
   std::vector<sf::Vector2f> taken; //! Vecotr where it can be array!
 
-  sf::Vector2f size;
+  sf::Vector2f size; 
 
   island() {
     // init & load
 
     for (int x = 0; x < tiles.size(); ++x) {
       for (int y = 0; y < tiles[x].size(); ++y) {
-        Sprite &s = tiles[x][y];
+        sf::Sprite &s = tiles[x][y];
 
-        s.from_path_to_txt(ASSETS"/Tilesets/Grass.png");
+        s.setTexture(Assets::GrassTile);
 
         if (x == 0 && y == 0) {
           s.setTextureRect(
@@ -101,7 +101,7 @@ public:
   void setPosition(sf::Vector2f pos) {
     for (int x = 0; x < tiles.size(); ++x) {
       for (int y = 0; y < tiles[x].size(); ++y) {
-        Sprite &s = tiles[x][y];
+        sf::Sprite &s = tiles[x][y];
 
         s.setScale({settings::SCALE, settings::SCALE});
         float pixel_x = pos.x + ((float)x * settings::DISPLAY_SCALE);

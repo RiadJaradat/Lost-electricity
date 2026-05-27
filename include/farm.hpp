@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 
-#include "Sprite.hpp"
+#include "AssetsManeger.hpp"
 #include "battery.hpp"
 #include "properties.hpp"
 #include "plant.hpp"
@@ -19,7 +19,7 @@ private:
     states.transform *= getTransform();
 
     for (const auto &sprtArray : tiles) {
-      for (const Sprite &s : sprtArray) {
+      for (const sf::Sprite &s : sprtArray) {
         target.draw(s, states);
       }
     }
@@ -38,20 +38,20 @@ private:
 public:
   constexpr static int FarmSize[2] = {5, 5};
 
-  std::array<std::array<Sprite, FarmSize[1]>, FarmSize[0]> tiles;
+  std::array<std::array<sf::Sprite, FarmSize[1]>, FarmSize[0]> tiles;
   std::array<std::array<Plant, FarmSize[1] - 2>, FarmSize[0] - 2> plants;
 
   sf::Vector2i size;
 
-  Harvester harvester;
+  Harvester harvester; 
 
   Farm(std::vector<std::unique_ptr<Battery>> &batteries) : harvester(batteries) {
 
     for (int x = 0; x < tiles.size(); ++x) {
       for (int y = 0; y < tiles[x].size(); ++y) {
-        Sprite &s = tiles[x][y];
+        sf::Sprite &s = tiles[x][y];
 
-        s.from_path_to_txt(ASSETS"/Tilesets/Tilled_Dirt_v2.png");
+        s.setTexture(Assets::DirtTile);
 
         if (x == 0 && y == 0) {
           s.setTextureRect(
