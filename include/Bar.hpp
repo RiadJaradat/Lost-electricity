@@ -1,9 +1,10 @@
 #pragma once
 
-#include "properties.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Window/Mouse.hpp>
+
+#include "properties.hpp"
 
 // *TODO: needs a style rework
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 #include <cstddef>
 #include <memory>
@@ -19,10 +19,12 @@
 #include "island.hpp"
 #include "player_obj.hpp"
 #include "properties.hpp"
+#include "store.hpp"
 
 class Window : public sf::RenderWindow {
 private:
   sf::VideoMode vm;
+  bool wasMousePressedLastFrame = false;
 
 public:
   island land;
@@ -32,7 +34,10 @@ public:
   Text AppleText;
   Timer PowerHourFrequncy;
   Timer PowerHourCountDown;
+  Timer DayNight;
   ProgressBar PowerHourLeftTime;
+  Store store;
+
   std::vector<std::unique_ptr<Battery>> bateries;
   std::vector<std::unique_ptr<Sprite>> decorations;
 
@@ -46,6 +51,7 @@ public:
     setView(Cammera);
     PowerHourFrequncy.maxTime = 60.f * 12; // 12 min
     PowerHourCountDown.maxTime = 15.f;
+    DayNight.maxTime = 60.f * 5; // 5 min
     PowerHourLeftTime.init(sf::Vector2f(50.f, 8.f), sf::Color(50, 50, 50),
                            sf::Color(50, 168, 82), PowerHourFrequncy.maxTime);
     PowerHourLeftTime.centerOrigin();
@@ -86,20 +92,59 @@ public:
 
       decorations.push_back(std::move(s));
     }
+
+    nightOverlay.setSize(sf::Vector2f(vm.width, vm.height));
+    nightOverlay.setPosition(0.f, 0.f);
   }
 
   sf::Clock clock;
   sf::View Cammera;
 
+  const sf::Color ClearSkyColor = sf::Color(24, 152, 184);
+
+  sf::Color DayColor = sf::Color(0, 0, 0, 0); // 0 Alpha = Completely invisible
+  sf::Color NightColor =
+      sf::Color(15, 15, 35, 160); // 160 Alpha = Translucent dark midnight blue
+  sf::Color currentSkyColor = DayColor;
+  sf::RectangleShape nightOverlay;
+
   int wheat_count = 0;
   int apple_count = 0;
 
+  bool isDay = true;
+
+  // Changes the overlay color slowly
+  void setBackGroundColor(sf::Color &current, sf::Color &to, float dt,
+                          float speed = 150.f) {
+    auto stepChannel = [](sf::Uint8 &curr, sf::Uint8 target, float delta,
+                          float spd) {
+      if (curr < target)
+        curr = std::min(static_cast<int>(target),
+                        static_cast<int>(curr + spd * delta));
+      else if (curr > target)
+        curr = std::max(static_cast<int>(target),
+                        static_cast<int>(curr - spd * delta));
+    };
+
+    stepChannel(current.r, to.r, dt, speed);
+    stepChannel(current.g, to.g, dt, speed);
+    stepChannel(current.b, to.b, dt, speed);
+    stepChannel(current.a, to.a, dt, speed); // Steps transparency smoothly
+
+    nightOverlay.setFillColor(current);
+
+    clear(ClearSkyColor);
+  }
+
   void update(float dt) {
+
+    DayNight.TimePassed += dt;
 
     player.update(dt);
     farm.update(dt, wheat_count, apple_count, (*this), &Cammera);
-
     Cammera.setCenter(player.pos);
+    store.update(dt, *this, &Cammera, player);
+
     setView(Cammera);
 
     WheatText.setString("Wheat: " + std::to_string(wheat_count));
@@ -109,8 +154,6 @@ public:
 
       // Power hour Time!
       PowerHourCountDown.TimePassed += dt;
-
-      // *TODO: chang to for (auto b : batteries) { ... }
 
       for (const auto &battery : bateries) {
         battery->Copasity += 10.f;
@@ -140,6 +183,24 @@ public:
                                         PowerHourFrequncy.TimePassed,
                                     (*this), &getDefaultView());
     }
+
+    if (DayNight.TimePassed > DayNight.maxTime) {
+      DayNight.TimePassed = 0.f;
+      isDay = !isDay;
+    }
+
+    if (isDay) {
+      setBackGroundColor(currentSkyColor, DayColor, dt);
+    } else {
+      setBackGroundColor(currentSkyColor, NightColor, dt);
+    }
+
+    bool isMousePressedThisFrame = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+    if (store.isHovered() && isMousePressedThisFrame &&
+        !wasMousePressedLastFrame) {
+      store.isClicked = !store.isClicked;
+    }
+    wasMousePressedLastFrame = isMousePressedThisFrame;
   }
 
   void gameLoop() {
@@ -175,6 +236,8 @@ public:
       s->setPosition(land.getIndex(randomPos, false));
     }
 
+    store.setPosition(land.getIndex({0, 0}));
+
     // * ----------- Cammera -----------------
     Cammera.zoom(0.8);
 
@@ -183,6 +246,16 @@ public:
       while (pollEvent(event)) {
         if (event.type == sf::Event::Closed)
           close();
+
+        else if (event.type == sf::Event::KeyPressed) {
+          if (event.key.code == sf::Keyboard::Key::Escape) {
+            if (player.has_target)
+              player.cancel_move_to();
+            else {
+              //// pass
+            }
+          }
+        }
 
         else if (event.type == sf::Event::MouseWheelScrolled) {
           // Only zoom if it's the vertical mouse wheel
@@ -204,7 +277,6 @@ public:
       float deltaT = dtTime.asSeconds();
 
       update(deltaT);
-      clear(sf::Color(24, 152, 184));
       draw(land);
 
       for (auto &decoration : decorations)
@@ -215,8 +287,10 @@ public:
         draw(*battery);
         draw(battery->powerBar);
       }
+      draw(store);
+
       setView(getDefaultView()); // FIXED: Switches viewport to pixel-perfect
-                                 // screen coords
+      draw(nightOverlay);
       draw(WheatText);
       draw(AppleText);
       draw(PowerHourLeftTime);

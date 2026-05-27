@@ -50,4 +50,9 @@ public:
   void setColor(sf::Color color) {
     m_text.setFillColor(color);
   }
+  
+  // ADD THIS: Exposes the inner text rectangle dimensions safely
+  sf::FloatRect getLocalBounds() const {
+    return m_text.getLocalBounds();
+  }
 };

@@ -1,14 +1,20 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 
 #include "Sprite.hpp"
 
 class Player : public Sprite {
+private:
+  sf::Vector2f target_pos;
+  float arrival_radius = 5.f;
+
 public:
   sf::Vector2f pos;
+  sf::Vector2f pos_before_mov_to;
   sf::Vector2f velocity{0.f, 0.f};
 
   // Tuning variables for the physics feel
@@ -16,27 +22,51 @@ public:
   float acceleration = 1000.f;
   float friction = 2.f; // Higher number = stops faster
 
+  bool has_target = false;
+
   Player() : Sprite() {}
 
   void update(float dt) {
-    // 1. Get movement direction from input
     float direction_x = 0.f;
     float direction_y = 0.f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-      direction_y = -1.f;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-      direction_y = 1.f;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-      direction_x = 1.f;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-      direction_x = -1.f;
+    // 1. Determine Input Direction (Pathfinding vs. Keyboard)
+    if (has_target) {
+      // Calculate vector to target
+      sf::Vector2f to_target = target_pos - pos;
+      float distance =
+          std::sqrt(to_target.x * to_target.x + to_target.y * to_target.y);
 
-    // 2. Apply Acceleration based on input
+      if (distance > arrival_radius) {
+        // Normalize the vector to get a clean direction vector
+        direction_x = to_target.x / distance;
+        direction_y = to_target.y / distance;
+      } else {
+        // Arrived at the destination! Stop moving toward it.
+        has_target = false;
+
+        // Optional: comment these lines out if you prefer a smooth slide past
+        // the exact stopping point
+        velocity = {0.f, 0.f};
+        pos = target_pos;
+      }
+    } else {
+      // Fallback to classic keyboard input if no target is active
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) ||
+          sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
+        direction_y = -1.f;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) ||
+          sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
+        direction_y = 1.f;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) ||
+          sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+        direction_x = 1.f;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) ||
+          sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+        direction_x = -1.f;
+    }
+
+    // 2. Apply Acceleration based on direction
     if (direction_x != 0.f) {
       velocity.x += direction_x * acceleration * dt;
     }
@@ -44,11 +74,9 @@ public:
       velocity.y += direction_y * acceleration * dt;
     }
 
-    // 3. Apply Friction/Deceleration when input is zero
+    // 3. Apply Friction/Deceleration when input or automatic direction is zero
     if (direction_x == 0.f) {
-      // Slide down toward zero
       velocity.x -= velocity.x * friction * dt;
-      // Snap to zero if it gets tiny to prevent endless micro-drifting
       if (std::abs(velocity.x) < 0.1f)
         velocity.x = 0.f;
     }
@@ -71,4 +99,15 @@ public:
 
     setPosition(pos);
   }
+
+  // Activates smooth movement to a specific coordinate frame
+  void move_to(sf::Vector2f to) {
+    pos_before_mov_to = getPosition();
+    target_pos = to;
+    has_target = true;
+  }
+
+  // Quick safety utility: Intercepting with manual keyboard input breaks the
+  // auto-walk
+  void cancel_move_to() { has_target = false; }
 };

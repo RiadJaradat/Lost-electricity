@@ -96,8 +96,6 @@ public:
 
     size.x = settings::DISPLAY_SCALE * tiles.size();
     size.y = settings::DISPLAY_SCALE * tiles[0].size();
-
-    taken.reserve(islandSize[0] * islandSize[1]);
   }
 
   void setPosition(sf::Vector2f pos) {
@@ -115,7 +113,6 @@ public:
   }
 
   sf::Vector2f getIndex(sf::Vector2i grid_i, bool markAsTaken = true) {
-
     if (grid_i.x < 0 || grid_i.x >= tiles.size()) {
       std::cerr << "Invalid position on x axis: " << grid_i.x << std::endl;
     }
@@ -130,26 +127,31 @@ public:
           throw std::bad_alloc();
         }
       }
-    }
 
-    taken.push_back(tiles[grid_i.x][grid_i.y].getPosition());
+      taken.push_back(tiles[grid_i.x][grid_i.y].getPosition());
+    }
 
     return tiles[grid_i.x][grid_i.y].getPosition();
   }
 
   template <typename iterable> void markAsTaken(iterable &List) {
+    for (auto &l : List) {
+      sf::Vector2f pos = l.getPosition();
+      // Skip marking coordinates if they haven't been given real world
+      // positions yet
+      if (pos.x == 0.f && pos.y == 0.f)
+        continue;
 
-    for (Sprite &l : List) {
-      for (sf::Vector2f &s : taken) {
-        if (l.getPosition() == s) {
-          std::cerr << "cannot allocate memory in taken position" << std::endl;
-          throw std::bad_alloc();
+      bool alreadyPresent = false;
+      for (const auto &s : taken) {
+        if (pos == s) {
+          alreadyPresent = true;
+          break;
         }
       }
-
-      taken.push_back(l.getPosition());
-
+      if (!alreadyPresent) {
+        taken.push_back(pos);
+      }
     }
-
   }
 };
