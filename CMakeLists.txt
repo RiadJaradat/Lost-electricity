@@ -22,5 +22,5 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     -O3 
     -Ofast 
     -ffast-math 
-    -march=native
+    -march=native # best run in Intel (tm) core i7 gen 8, its compiled source.
 )
