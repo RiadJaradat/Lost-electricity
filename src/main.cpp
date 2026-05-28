@@ -61,7 +61,10 @@ int main() {
 
 #ifdef NDEBUG
 #else
-  std::cout << "Warning:\n\tGame ran in Debug mode, which makes the game much slower compered to the release mode.\n\n* Consider switching to the release mode if playing on an official release of the game\n";
+  std::cout
+      << "Warning:\n\tGame ran in Debug mode, which makes the game much slower "
+         "compered to the release mode.\n\n* Consider switching to the release "
+         "mode if playing on an official release of the game\n";
 #endif
 
   Assets();

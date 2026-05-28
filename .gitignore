@@ -1,0 +1,90 @@
+# =========================
+# Build directories
+# =========================
+build/
+cmake-build-debug/
+cmake-build-release/
+out/
+bin/
+
+# =========================
+# CMake
+# =========================
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+
+# =========================
+# Executables
+# =========================
+*.exe
+*.out
+*.app
+*.elf
+
+# Your game binary
+LostElectricity
+
+# =========================
+# Object / compiled files
+# =========================
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.dylib
+
+# =========================
+# Debugger / profiling
+# =========================
+*.gdb
+gmon.out
+core
+vgcore.*
+
+# =========================
+# Editors / IDEs
+# =========================
+
+# VSCode
+.vscode/
+
+# CLion / JetBrains
+.idea/
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+
+# =========================
+# OS junk
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Cache / temp
+# =========================
+.cache/
+tmp/
+temp/
+
+# =========================
+# Optional: asset exports
+# Uncomment if needed
+# =========================
+# exports/
+# screenshots/
+# recordings/
