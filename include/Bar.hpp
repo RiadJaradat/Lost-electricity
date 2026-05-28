@@ -4,8 +4,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Window/Mouse.hpp>
 
-#include "properties.hpp"
-
 // *TODO: needs a style rework
 
 class ProgressBar : public sf::Drawable, public sf::Transformable {

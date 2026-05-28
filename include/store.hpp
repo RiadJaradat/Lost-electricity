@@ -5,10 +5,6 @@
 #include "clickable_sprite.hpp"
 #include "player_obj.hpp"
 #include "properties.hpp"
-#include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 
 class Store : public Clickable {
 private:

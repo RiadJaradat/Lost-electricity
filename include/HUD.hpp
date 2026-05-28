@@ -30,7 +30,7 @@ public:
   HUD(Time &t) : time(t) {
     PowerHourLeftTime.init(sf::Vector2f(50.f, 8.f), sf::Color(50, 50, 50),
                            sf::Color(50, 168, 82),
-                           time.PowerHourFrequncy.maxTime);
+                           time.PowerHourFrequency.maxTime);
     PowerHourLeftTime.centerOrigin();
     PowerHourLeftTime.setScale(3 * settings::SCALE, settings::SCALE);
     PowerHourLeftTime.warning_color = sf::Color(29, 102, 171);
@@ -49,7 +49,7 @@ public:
               Player &player) {
     WheatText.setString("Wheat: " + std::to_string(player.wheat_count));
     AppleText.setString("Apple: " + std::to_string(player.apple_count));
-    if (time.PowerHourFrequncy.TimePassed >= time.PowerHourFrequncy.maxTime) {
+    if (time.PowerHourFrequency.TimePassed >= time.PowerHourFrequency.maxTime) {
 
       // Power hour Time!
       time.PowerHourCountDown.TimePassed += dt;
@@ -59,20 +59,20 @@ public:
 
       PowerHourLeftTime.updateValue(
           (timeRemaining / time.PowerHourCountDown.maxTime) *
-              time.PowerHourFrequncy.maxTime,
+              time.PowerHourFrequency.maxTime,
           window, &window.getDefaultView());
 
       if (time.PowerHourCountDown.TimePassed >
           time.PowerHourCountDown.maxTime) {
-        time.PowerHourFrequncy.TimePassed = 0.f;
+        time.PowerHourFrequency.TimePassed = 0.f;
         time.PowerHourCountDown.TimePassed = 0.f;
       }
     } else {
-      time.PowerHourFrequncy.TimePassed += dt;
+      time.PowerHourFrequency.TimePassed += dt;
 
       // FIXED: Pass the unmoving HUD layout view context here too
-      PowerHourLeftTime.updateValue(time.PowerHourFrequncy.maxTime -
-                                        time.PowerHourFrequncy.TimePassed,
+      PowerHourLeftTime.updateValue(time.PowerHourFrequency.maxTime -
+                                        time.PowerHourFrequency.TimePassed,
                                     window, &window.getDefaultView());
     }
   }

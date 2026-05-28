@@ -81,11 +81,11 @@ public:
     if (power <= 0) {
 
       Battery *battery = nullptr;
-      int heightest_cop = -1.f;
+      int heightset_cop = -1.f;
 
       for (size_t i = 0; i < batteries.size(); ++i) {
-        if (batteries[i]->Copasity > heightest_cop) {
-          heightest_cop = batteries[i]->Copasity;
+        if (batteries[i]->Capacity > heightset_cop) {
+          heightset_cop = batteries[i]->Capacity;
           battery =
               batteries[i].get(); // Store the real object's memory address
         }

@@ -17,7 +17,7 @@ private:
     for (auto &decoration : decorations)
       target.draw(*decoration, states);
     target.draw(farm, states);
-    for (const auto &battery : bateries) {
+    for (const auto &battery : batteries) {
       target.draw(*battery, states);
       // *TODO: make them for the UI.hpp
       target.draw(battery->powerBar, states);
@@ -29,13 +29,13 @@ public:
   island land;
   Farm farm;
   Store store;
-  std::vector<std::unique_ptr<Battery>> bateries;
+  std::vector<std::unique_ptr<Battery>> batteries;
   std::vector<std::unique_ptr<sf::Sprite>> decorations;
 
-  World() : farm(bateries) {
+  World() : farm(batteries) {
 
-    bateries.push_back(std::make_unique<Battery>());
-    bateries.push_back(std::make_unique<Battery>());
+    batteries.push_back(std::make_unique<Battery>());
+    batteries.push_back(std::make_unique<Battery>());
 
     size_t decorationCount =
         (size_t)((land.tiles.size() * land.tiles[0].size()) *
@@ -78,8 +78,8 @@ public:
       land.markAsTaken(s);
     }
 
-    for (size_t i = 0; i < bateries.size(); ++i) {
-      bateries[i]->setPosition(land.getIndex({1, static_cast<int>(5 + i + 1)}));
+    for (size_t i = 0; i < batteries.size(); ++i) {
+      batteries[i]->setPosition(land.getIndex({1, static_cast<int>(5 + i + 1)}));
     }
 
     for (std::unique_ptr<sf::Sprite> &s : decorations) {
@@ -93,16 +93,16 @@ public:
     store.setPosition(land.getIndex({0, 0}));
   }
 
-  void update(float dt, sf::RenderWindow &window, sf::View &Cammera,
+  void update(float dt, sf::RenderWindow &window, sf::View &Camera,
               Player &player) {
-    farm.update(dt, player.wheat_count, player.apple_count, window, &Cammera);
-    store.update(dt, window, &Cammera, player);
+    farm.update(dt, player.wheat_count, player.apple_count, window, &Camera);
+    store.update(dt, window, &Camera, player);
 
-    for (const auto &battery : bateries) {
-      battery->Copasity += 10.f;
+    for (const auto &battery : batteries) {
+      battery->Capacity += 10.f;
 
-      if (battery->Copasity >= battery->maxCapacity) {
-        battery->Copasity = battery->maxCapacity;
+      if (battery->Capacity >= battery->maxCapacity) {
+        battery->Capacity = battery->maxCapacity;
       }
     }
 
@@ -113,7 +113,7 @@ public:
     }
     wasMousePressedLastFrame = isMousePressedThisFrame;
 
-    for (auto &b : bateries)
+    for (auto &b : batteries)
       b->update(dt);
   }
 };

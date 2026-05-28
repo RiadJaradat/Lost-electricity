@@ -4,14 +4,14 @@
 
 class Time {
 public:
-  Timer PowerHourFrequncy;
+  Timer PowerHourFrequency;
   Timer PowerHourCountDown;
   Timer DayNight;
 
   bool isDay = true;
 
   Time() {
-    PowerHourFrequncy.maxTime = 60.f * 12; // 12 min
+    PowerHourFrequency.maxTime = 60.f * 12; // 12 min
     PowerHourCountDown.maxTime = 15.f;
     DayNight.maxTime = 60.f * 5; // 5 min
   }

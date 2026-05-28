@@ -4,7 +4,7 @@
 #include <random>
 
 struct settings {
-  inline static const int FPS = 60;
+  inline static const int FPS = 999999;
   inline static const int TILE_SIZE = 16;
   inline static const int SCALE = 3;
   inline static const int DISPLAY_SCALE = SCALE * TILE_SIZE;

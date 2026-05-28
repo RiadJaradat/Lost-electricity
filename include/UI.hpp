@@ -21,5 +21,5 @@ public:
                                settings::TILE_SIZE));
     setScale(settings::SCALE, settings::SCALE); 
   }
-  void add_chiled(sf::Drawable &d) { children.push_back(&d); }
+  void add_child(sf::Drawable &d) { children.push_back(&d); }
 };

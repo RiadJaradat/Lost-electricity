@@ -8,7 +8,7 @@
 
 enum Ripeness {
   SEED = 1, // *SEED: the plant in the beginning of its life
-  TOD = 2,  // *TOD (todler): the plant in its start
+  TOD = 2,  // *TOD (toddler): the plant in its start
   ADLT = 3, // *ADLT (adult): almost fully grown
   RIPE = 4  // *RIPE: the plant when it is fully grown
 };
@@ -60,6 +60,3 @@ public:
     }
   }
 };
-
-// *TODO:
-// the robot will both water the plant and harvest them

@@ -36,7 +36,7 @@ public:
   constexpr static int islandSize[2] = {20, 10};
 
   std::array<std::array<sf::Sprite, islandSize[1]>, islandSize[0]> tiles;
-  std::vector<sf::Vector2f> taken; //! Vecotr where it can be array!
+  std::vector<sf::Vector2f> taken; //! Vector where it can be array!
 
   sf::Vector2f size; 
 
