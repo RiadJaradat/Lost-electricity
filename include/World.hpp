@@ -5,7 +5,6 @@
 #include "farm.hpp"
 #include "island.hpp"
 #include "player_obj.hpp"
-#include "store.hpp"
 
 class World : public sf::Drawable {
 private:
@@ -22,13 +21,11 @@ private:
       // *TODO: make them for the UI.hpp
       target.draw(battery->powerBar, states);
     }
-    target.draw(store, states);
   }
 
 public:
   island land;
   Farm farm;
-  Store store;
   std::vector<std::unique_ptr<Battery>> batteries;
   std::vector<std::unique_ptr<sf::Sprite>> decorations;
 
@@ -89,14 +86,11 @@ public:
 
       s->setPosition(land.getIndex(randomPos, false));
     }
-
-    store.setPosition(land.getIndex({0, 0}));
   }
 
   void update(float dt, sf::RenderWindow &window, sf::View &Camera,
               Player &player) {
     farm.update(dt, player.wheat_count, player.apple_count, window, &Camera);
-    store.update(dt, window, &Camera, player);
 
     for (const auto &battery : batteries) {
       battery->Capacity += 10.f;
@@ -105,13 +99,6 @@ public:
         battery->Capacity = battery->maxCapacity;
       }
     }
-
-    bool isMousePressedThisFrame = sf::Mouse::isButtonPressed(sf::Mouse::Left);
-    if (store.isHovered() && isMousePressedThisFrame &&
-        !wasMousePressedLastFrame) {
-      store.isClicked = !store.isClicked;
-    }
-    wasMousePressedLastFrame = isMousePressedThisFrame;
 
     for (auto &b : batteries)
       b->update(dt);

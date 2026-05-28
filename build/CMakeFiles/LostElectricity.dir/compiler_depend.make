@@ -4,22 +4,18 @@
 CMakeFiles/LostElectricity.dir/src/main.cpp.o: /home/rjaradat/Projects/lost-electricity/src/main.cpp \
   /home/rjaradat/Projects/lost-electricity/include/AssetsManeger.hpp \
   /home/rjaradat/Projects/lost-electricity/include/Bar.hpp \
-  /home/rjaradat/Projects/lost-electricity/include/Button.hpp \
   /home/rjaradat/Projects/lost-electricity/include/GameObjects.hpp \
   /home/rjaradat/Projects/lost-electricity/include/HUD.hpp \
   /home/rjaradat/Projects/lost-electricity/include/Harvester.hpp \
   /home/rjaradat/Projects/lost-electricity/include/Text.hpp \
   /home/rjaradat/Projects/lost-electricity/include/Time.hpp \
-  /home/rjaradat/Projects/lost-electricity/include/UI.hpp \
   /home/rjaradat/Projects/lost-electricity/include/World.hpp \
   /home/rjaradat/Projects/lost-electricity/include/battery.hpp \
-  /home/rjaradat/Projects/lost-electricity/include/clickable_sprite.hpp \
   /home/rjaradat/Projects/lost-electricity/include/farm.hpp \
   /home/rjaradat/Projects/lost-electricity/include/island.hpp \
   /home/rjaradat/Projects/lost-electricity/include/plant.hpp \
   /home/rjaradat/Projects/lost-electricity/include/player_obj.hpp \
   /home/rjaradat/Projects/lost-electricity/include/properties.hpp \
-  /home/rjaradat/Projects/lost-electricity/include/store.hpp \
   /usr/include/SFML/Config.hpp \
   /usr/include/SFML/Graphics.hpp \
   /usr/include/SFML/Graphics/BlendMode.hpp \
@@ -532,6 +528,8 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/c++/15/x86_64-redhat-linux/bits/atomic_word.h:
 
+/usr/include/c++/15/vector:
+
 /usr/include/c++/15/tuple:
 
 /usr/include/c++/15/tr1/special_function_util.h:
@@ -640,7 +638,9 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/c++/15/bits/uniform_int_dist.h:
 
-/usr/include/c++/15/bits/stl_tempbuf.h:
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/bits/pthreadtypes-arch.h:
 
 /usr/include/bits/mathcalls-helper-functions.h:
 
@@ -692,15 +692,19 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/SFML/Graphics/Shape.hpp:
 
+/usr/include/SFML/System/Sleep.hpp:
+
+/usr/include/asm/bitsperlong.h:
+
 /usr/include/asm-generic/errno-base.h:
 
 /home/rjaradat/Projects/lost-electricity/include/GameObjects.hpp:
 
-/usr/include/SFML/System/Export.hpp:
-
 /usr/include/c++/15/tr1/hypergeometric.tcc:
 
 /usr/include/bits/mathcalls-macros.h:
+
+/usr/include/SFML/System/Export.hpp:
 
 /usr/lib64/libXcursor.so.1:
 
@@ -756,8 +760,6 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/c++/15/bits/refwrap.h:
 
-/usr/include/bits/pthreadtypes-arch.h:
-
 /usr/include/SFML/System/Vector2.hpp:
 
 /usr/include/SFML/System/ThreadLocalPtr.hpp:
@@ -780,29 +782,29 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/SFML/System/String.inl:
 
-/usr/include/c++/15/vector:
-
-/home/rjaradat/Projects/lost-electricity/include/clickable_sprite.hpp:
-
 /usr/include/c++/15/bits/basic_string.h:
 
-/usr/include/libintl.h:
+/usr/include/c++/15/bits/streambuf_iterator.h:
 
-/usr/include/bits/endianness.h:
+/usr/include/SFML/Window/Window.hpp:
 
-/usr/include/SFML/System/String.hpp:
+/usr/include/SFML/Graphics/Shader.hpp:
 
-/usr/include/SFML/System/Mutex.hpp:
+/usr/include/bits/pthread_stack_min-dynamic.h:
+
+/usr/include/SFML/Graphics/Glsl.hpp:
 
 /home/rjaradat/Projects/lost-electricity/include/Time.hpp:
 
 /home/rjaradat/Projects/lost-electricity/include/AssetsManeger.hpp:
 
-/usr/include/asm-generic/int-ll64.h:
+/usr/include/SFML/System/Vector3.hpp:
 
-/usr/include/SFML/Window/WindowBase.hpp:
+/usr/include/c++/15/bits/stl_algobase.h:
 
-/usr/include/SFML/System/InputStream.hpp:
+/usr/include/SFML/System/Vector3.inl:
+
+/usr/include/SFML/Graphics/VertexBuffer.hpp:
 
 /usr/include/c++/15/bits/stl_pair.h:
 
@@ -830,7 +832,13 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/bits/types/__fpos_t.h:
 
-/usr/include/bits/pthreadtypes.h:
+/usr/include/c++/15/tr1/poly_laguerre.tcc:
+
+/usr/include/c++/15/pstl/glue_algorithm_defs.h:
+
+/usr/include/c++/15/bits/charconv.h:
+
+/usr/include/bits/types/clock_t.h:
 
 /usr/include/SFML/Graphics/RectangleShape.hpp:
 
@@ -840,33 +848,15 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/bits/types/time_t.h:
 
-/usr/include/c++/15/ext/alloc_traits.h:
+/usr/include/libintl.h:
 
-/usr/include/SFML/Graphics/CircleShape.hpp:
+/usr/include/bits/endianness.h:
 
-/home/rjaradat/Projects/lost-electricity/include/plant.hpp:
+/usr/include/SFML/System/String.hpp:
 
-/usr/include/SFML/System/Utf.hpp:
+/usr/include/c++/15/bits/stl_iterator.h:
 
-/usr/include/c++/15/bits/stl_raw_storage_iter.h:
-
-/usr/include/SFML/Window/Cursor.hpp:
-
-/usr/include/c++/15/bits/node_handle.h:
-
-/usr/include/c++/15/cwchar:
-
-/usr/include/SFML/Graphics/BlendMode.hpp:
-
-/usr/include/SFML/Graphics/Vertex.hpp:
-
-/usr/lib64/libsfml-graphics.so.2.6.2:
-
-/usr/include/asm/types.h:
-
-/usr/include/SFML/System/Clock.hpp:
-
-/home/rjaradat/Projects/lost-electricity/include/farm.hpp:
+/usr/include/SFML/Graphics/Image.hpp:
 
 /home/rjaradat/Projects/lost-electricity/include/Bar.hpp:
 
@@ -878,39 +868,13 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/SFML/Window/Context.hpp:
 
-/usr/include/c++/15/cctype:
-
-/usr/include/bits/types/struct_FILE.h:
-
-/home/rjaradat/Projects/lost-electricity/include/HUD.hpp:
-
 /usr/include/c++/15/x86_64-redhat-linux/bits/c++locale.h:
 
 /usr/include/c++/15/bits/codecvt.h:
 
-/usr/include/SFML/System/Sleep.hpp:
-
-/usr/include/asm/bitsperlong.h:
-
-/usr/include/c++/15/tr1/poly_laguerre.tcc:
-
-/usr/include/c++/15/pstl/glue_algorithm_defs.h:
-
-/usr/include/bits/types/clock_t.h:
-
-/usr/include/c++/15/bits/charconv.h:
-
 /usr/include/bits/atomic_wide_counter.h:
 
 /home/rjaradat/Projects/lost-electricity/src/main.cpp:
-
-/usr/include/alloca.h:
-
-/usr/include/c++/15/system_error:
-
-/usr/include/bits/endian.h:
-
-/home/rjaradat/Projects/lost-electricity/include/battery.hpp:
 
 /usr/include/c++/15/x86_64-redhat-linux/bits/time_members.h:
 
@@ -920,15 +884,13 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/SFML/Graphics/Color.hpp:
 
-/usr/include/bits/timesize.h:
+/usr/include/alloca.h:
 
-/usr/include/bits/typesizes.h:
+/usr/include/c++/15/system_error:
 
-/usr/include/SFML/Graphics/Glsl.inl:
+/usr/include/bits/endian.h:
 
-/usr/include/SFML/System/Vector3.inl:
-
-/usr/include/SFML/Graphics/VertexBuffer.hpp:
+/home/rjaradat/Projects/lost-electricity/include/battery.hpp:
 
 /usr/include/c++/15/random:
 
@@ -946,19 +908,43 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/c++/15/bits/move.h:
 
-/usr/include/c++/15/bits/streambuf_iterator.h:
+/home/rjaradat/Projects/lost-electricity/include/farm.hpp:
 
-/usr/include/SFML/Window/Window.hpp:
+/usr/include/c++/15/ext/alloc_traits.h:
 
-/usr/include/SFML/Graphics/Shader.hpp:
+/usr/include/SFML/Graphics/CircleShape.hpp:
 
-/usr/include/c++/15/bits/stl_iterator.h:
+/home/rjaradat/Projects/lost-electricity/include/plant.hpp:
 
-/usr/include/SFML/Graphics/Image.hpp:
+/usr/include/SFML/System/Utf.hpp:
 
-/usr/include/SFML/System/Vector3.hpp:
+/usr/include/c++/15/bits/stl_raw_storage_iter.h:
 
-/usr/include/c++/15/bits/stl_algobase.h:
+/usr/include/SFML/Window/Cursor.hpp:
+
+/usr/include/c++/15/cctype:
+
+/home/rjaradat/Projects/lost-electricity/include/HUD.hpp:
+
+/usr/include/bits/types/struct_FILE.h:
+
+/usr/include/c++/15/bits/node_handle.h:
+
+/usr/include/c++/15/cwchar:
+
+/usr/include/SFML/Graphics/BlendMode.hpp:
+
+/usr/include/SFML/Graphics/Glsl.inl:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/SFML/Graphics/Vertex.hpp:
+
+/usr/lib64/libsfml-graphics.so.2.6.2:
+
+/usr/include/asm/types.h:
+
+/usr/include/SFML/System/Clock.hpp:
 
 /usr/include/SFML/Graphics/Rect.hpp:
 
@@ -969,10 +955,6 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 /usr/include/SFML/Graphics/Rect.inl:
 
 /usr/include/SFML/System/Err.hpp:
-
-/usr/include/SFML/System/NonCopyable.hpp:
-
-/usr/include/bits/mathcalls-narrow.h:
 
 /usr/include/SFML/Config.hpp:
 
@@ -1010,15 +992,21 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/bits/types/FILE.h:
 
-/home/rjaradat/Projects/lost-electricity/include/UI.hpp:
-
-/usr/include/bits/select.h:
-
 /usr/include/SFML/Graphics/VertexArray.hpp:
 
-/usr/include/SFML/Graphics/Glsl.hpp:
+/usr/include/asm-generic/int-ll64.h:
 
-/usr/include/bits/pthread_stack_min-dynamic.h:
+/usr/include/SFML/Window/WindowBase.hpp:
+
+/usr/include/SFML/System/InputStream.hpp:
+
+/usr/include/SFML/System/Mutex.hpp:
+
+/usr/include/bits/mathcalls-narrow.h:
+
+/usr/include/SFML/System/NonCopyable.hpp:
+
+/usr/include/bits/select.h:
 
 /usr/include/SFML/System/Utf.inl:
 
@@ -1037,8 +1025,6 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 /usr/include/bits/stdio.h:
 
 /usr/include/c++/15/bits/atomic_base.h:
-
-/home/rjaradat/Projects/lost-electricity/include/store.hpp:
 
 /usr/include/bits/stdio_lim.h:
 
@@ -1062,13 +1048,13 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/c++/15/bits/uses_allocator.h:
 
-/home/rjaradat/Projects/lost-electricity/include/Button.hpp:
-
 /usr/include/bits/struct_rwlock.h:
 
 /usr/include/bits/types/struct_itimerspec.h:
 
 /usr/include/bits/thread-shared-types.h:
+
+/usr/include/bits/timesize.h:
 
 /home/rjaradat/Projects/lost-electricity/include/Harvester.hpp:
 
@@ -1098,9 +1084,9 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/bits/types/mbstate_t.h:
 
-/usr/include/c++/15/bits/stl_tree.h:
-
 /usr/include/bits/wchar.h:
+
+/usr/include/c++/15/bits/stl_tree.h:
 
 /usr/include/bits/waitstatus.h:
 
@@ -1208,12 +1194,6 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 
 /usr/include/c++/15/bits/exception_ptr.h:
 
-/usr/include/c++/15/x86_64-redhat-linux/bits/os_defines.h:
-
-/usr/include/c++/15/bits/stl_vector.h:
-
-/usr/include/c++/15/bits/functexcept.h:
-
 /usr/include/SFML/Graphics/RenderWindow.hpp:
 
 /usr/include/c++/15/bits/functional_hash.h:
@@ -1287,3 +1267,11 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o:
 /usr/include/c++/15/bits/shared_ptr_base.h:
 
 /usr/include/c++/15/bits/stl_multimap.h:
+
+/usr/include/c++/15/bits/stl_tempbuf.h:
+
+/usr/include/c++/15/x86_64-redhat-linux/bits/os_defines.h:
+
+/usr/include/c++/15/bits/functexcept.h:
+
+/usr/include/c++/15/bits/stl_vector.h:

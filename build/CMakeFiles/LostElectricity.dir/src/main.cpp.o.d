@@ -225,6 +225,8 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o: \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp \
+ /home/rjaradat/Projects/lost-electricity/include/plant.hpp \
+ /home/rjaradat/Projects/lost-electricity/include/AssetsManeger.hpp \
  /home/rjaradat/Projects/lost-electricity/include/properties.hpp \
  /usr/include/c++/15/random /usr/include/c++/15/cmath /usr/include/math.h \
  /usr/include/bits/math-vector.h /usr/include/bits/libm-simd-decl-stubs.h \
@@ -257,15 +259,12 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o: \
  /usr/include/c++/15/bits/random.tcc /usr/include/c++/15/numeric \
  /usr/include/c++/15/bits/stl_numeric.h \
  /usr/include/c++/15/pstl/glue_numeric_defs.h \
- /home/rjaradat/Projects/lost-electricity/include/plant.hpp \
- /home/rjaradat/Projects/lost-electricity/include/AssetsManeger.hpp \
  /home/rjaradat/Projects/lost-electricity/include/player_obj.hpp \
- /home/rjaradat/Projects/lost-electricity/include/Text.hpp \
- /usr/include/c++/15/iostream /usr/include/c++/15/istream \
- /usr/include/c++/15/bits/istream.tcc \
  /home/rjaradat/Projects/lost-electricity/include/battery.hpp \
  /home/rjaradat/Projects/lost-electricity/include/farm.hpp \
  /usr/include/c++/15/array /usr/include/c++/15/compare \
+ /usr/include/c++/15/iostream /usr/include/c++/15/istream \
+ /usr/include/c++/15/bits/istream.tcc \
  /home/rjaradat/Projects/lost-electricity/include/Harvester.hpp \
  /usr/include/c++/15/memory \
  /usr/include/c++/15/bits/stl_raw_storage_iter.h \
@@ -281,9 +280,6 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o: \
  /usr/include/c++/15/pstl/glue_memory_defs.h \
  /home/rjaradat/Projects/lost-electricity/include/island.hpp \
  /home/rjaradat/Projects/lost-electricity/include/HUD.hpp \
+ /home/rjaradat/Projects/lost-electricity/include/Text.hpp \
  /home/rjaradat/Projects/lost-electricity/include/Time.hpp \
- /home/rjaradat/Projects/lost-electricity/include/UI.hpp \
- /home/rjaradat/Projects/lost-electricity/include/World.hpp \
- /home/rjaradat/Projects/lost-electricity/include/store.hpp \
- /home/rjaradat/Projects/lost-electricity/include/clickable_sprite.hpp \
- /home/rjaradat/Projects/lost-electricity/include/Button.hpp
+ /home/rjaradat/Projects/lost-electricity/include/World.hpp

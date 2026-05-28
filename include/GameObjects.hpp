@@ -10,6 +10,4 @@
 #include "HUD.hpp"
 #include "Time.hpp"
 #include "Text.hpp"
-#include "UI.hpp"
 #include "World.hpp"
-#include "Button.hpp"

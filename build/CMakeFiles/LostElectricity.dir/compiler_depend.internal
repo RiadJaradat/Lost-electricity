@@ -5,22 +5,18 @@ CMakeFiles/LostElectricity.dir/src/main.cpp.o
  /home/rjaradat/Projects/lost-electricity/src/main.cpp
  /home/rjaradat/Projects/lost-electricity/include/AssetsManeger.hpp
  /home/rjaradat/Projects/lost-electricity/include/Bar.hpp
- /home/rjaradat/Projects/lost-electricity/include/Button.hpp
  /home/rjaradat/Projects/lost-electricity/include/GameObjects.hpp
  /home/rjaradat/Projects/lost-electricity/include/HUD.hpp
  /home/rjaradat/Projects/lost-electricity/include/Harvester.hpp
  /home/rjaradat/Projects/lost-electricity/include/Text.hpp
  /home/rjaradat/Projects/lost-electricity/include/Time.hpp
- /home/rjaradat/Projects/lost-electricity/include/UI.hpp
  /home/rjaradat/Projects/lost-electricity/include/World.hpp
  /home/rjaradat/Projects/lost-electricity/include/battery.hpp
- /home/rjaradat/Projects/lost-electricity/include/clickable_sprite.hpp
  /home/rjaradat/Projects/lost-electricity/include/farm.hpp
  /home/rjaradat/Projects/lost-electricity/include/island.hpp
  /home/rjaradat/Projects/lost-electricity/include/plant.hpp
  /home/rjaradat/Projects/lost-electricity/include/player_obj.hpp
  /home/rjaradat/Projects/lost-electricity/include/properties.hpp
- /home/rjaradat/Projects/lost-electricity/include/store.hpp
  /usr/include/SFML/Config.hpp
  /usr/include/SFML/Graphics.hpp
  /usr/include/SFML/Graphics/BlendMode.hpp

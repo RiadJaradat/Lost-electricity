@@ -86,6 +86,8 @@ int main() {
     sf::Time dtTime = GameClock.restart();
     float deltaT = dtTime.asSeconds();
 
+    window.clear();
+
     update(deltaT);
     window.draw(world);
 
@@ -94,6 +96,11 @@ int main() {
     window.draw(hud);
 
     window.display();
+
+    #ifdef NDEBUG
+    #else
+    std::printf("FPS: %f\n", 1.f / deltaT);
+    #endif
   }
 
   return 0;
