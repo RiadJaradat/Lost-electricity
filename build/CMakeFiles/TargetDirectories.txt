@@ -1,0 +1,3 @@
+/home/rjaradat/Projects/lost-electricity/build/CMakeFiles/LostElectricity.dir
+/home/rjaradat/Projects/lost-electricity/build/CMakeFiles/edit_cache.dir
+/home/rjaradat/Projects/lost-electricity/build/CMakeFiles/rebuild_cache.dir
