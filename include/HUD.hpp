@@ -1,11 +1,14 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Window/VideoMode.hpp>
+#include <stdexcept>
 
 #include "Bar.hpp"
+#include "Button.hpp"
 #include "Text.hpp"
 #include "Time.hpp"
 #include "player_obj.hpp"
@@ -17,11 +20,13 @@ private:
     target.draw(WheatText, states);
     target.draw(AppleText, states);
     target.draw(PowerHourLeftTime, states);
+    target.draw(randomBtn, states);
   }
 
 public:
   Text WheatText;
   Text AppleText;
+  Button randomBtn;
 
   ProgressBar PowerHourLeftTime;
 
@@ -35,6 +40,12 @@ public:
     PowerHourLeftTime.setScale(3 * settings::SCALE, settings::SCALE);
     PowerHourLeftTime.warning_color = sf::Color(29, 102, 171);
     PowerHourLeftTime.default_color = sf::Color(191, 161, 52);
+    randomBtn.setFillColor(sf::Color::Red);
+    randomBtn.m_text.setString("Kill Game");
+    randomBtn.setSize({randomBtn.m_text.getGlobalBounds().width + 10, 100});
+    randomBtn.onClick = [](){
+      throw std::runtime_error("Game Killed");
+    };
   }
 
   void setPositions(sf::VideoMode &vm) {
@@ -43,10 +54,12 @@ public:
     AppleText.setPos({10, 40});
     AppleText.setSize(12 * settings::SCALE);
     PowerHourLeftTime.setPosition({(float)vm.width / 2, (float)vm.height - 20});
+    randomBtn.setPosition(10, 100);
   }
 
   void update(float dt, sf::RenderWindow &window, sf::View &view,
               Player &player) {
+    randomBtn.update(window);
     WheatText.setString("Wheat: " + std::to_string(player.wheat_count));
     AppleText.setString("Apple: " + std::to_string(player.apple_count));
     if (time.PowerHourFrequency.TimePassed >= time.PowerHourFrequency.maxTime) {
