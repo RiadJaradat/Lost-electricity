@@ -1,7 +1,7 @@
 [
 {
   "directory": "/home/rjaradat/Projects/lost-electricity/build",
-  "command": "/usr/bin/clang++ -I/home/rjaradat/Projects/lost-electricity/include -std=c++26 -g -std=gnu++17 -O3 -Ofast -ffast-math -march=native -o CMakeFiles/LostElectricity.dir/src/main.cpp.o -c /home/rjaradat/Projects/lost-electricity/src/main.cpp",
+  "command": "/usr/bin/clang++ -I/home/rjaradat/Projects/lost-electricity/include -std=c++26 -g -std=gnu++23 -O3 -Ofast -ffast-math -march=native -o CMakeFiles/LostElectricity.dir/src/main.cpp.o -c /home/rjaradat/Projects/lost-electricity/src/main.cpp",
   "file": "/home/rjaradat/Projects/lost-electricity/src/main.cpp",
   "output": "CMakeFiles/LostElectricity.dir/src/main.cpp.o"
 }

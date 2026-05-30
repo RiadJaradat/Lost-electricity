@@ -1,0 +1,249 @@
+#pragma once
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Transformable.hpp>
+#include <SFML/System/Vector2.hpp>
+
+#include "AssetsManeger.hpp"
+#include "properties.hpp"
+
+class ui_element : public sf::Drawable, public sf::Transformable {
+
+private:
+  void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
+    target.draw(sprt, states);
+    target.draw(rect, states);
+  }
+
+public:
+  sf::RectangleShape rect;
+  sf::Sprite sprt;
+  sf::Vector2f size;
+  sf::Color FillColor = sf::Color::Transparent;
+
+  ui_element() { sprt.setTexture(Assets::UiTILe); }
+
+  void setSize(sf::Vector2f n_size) {
+    size = n_size;
+    rect.setSize(size);
+  }
+
+  void setFillColor(sf::Color n_color) {
+    FillColor = n_color;
+    rect.setFillColor(FillColor);
+  }
+
+  void setRect() {
+    sprt.setTextureRect(sf::IntRect(
+        settings::TILE_SIZE, 0, settings::TILE_SIZE * 2, settings::TILE_SIZE));
+  }
+  void setSquare() {
+    sprt.setTextureRect(sf::IntRect(settings::TILE_SIZE, 0, settings::TILE_SIZE,
+                                    settings::TILE_SIZE));
+  }
+
+  void setPosition(sf::Vector2f n_pos) {
+    sf::Transformable::setPosition(n_pos);
+
+    rect.setPosition(getPosition());
+    sprt.setPosition(rect.getPosition());
+    sprt.setScale({rect.getSize().x / sprt.getGlobalBounds().width,
+                   rect.getSize().y / sprt.getGlobalBounds().height});
+  }
+
+  void update() {
+    rect.setPosition(getPosition());
+    sprt.setPosition(rect.getPosition());
+  }
+};
+
+
+#pragma once
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector3.hpp>
+
+#include "AssetsManeger.hpp"
+#include "Bar.hpp"
+#include "Button.hpp"
+#include "Text.hpp"
+#include "Time.hpp"
+#include "player_obj.hpp"
+#include "properties.hpp"
+#include "ui_element.hpp"
+
+class HUD : public sf::Drawable {
+private:
+  void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
+    target.draw(WheatText, states);
+    target.draw(AppleText, states);
+    target.draw(PowerHourLeftTime, states);
+    target.draw(StoreBtn, states);
+    if (drawUI)
+      target.draw(store_ui, states);
+  }
+
+public:
+  Text WheatText;
+  Text AppleText;
+  Button StoreBtn;
+  ui_element store_ui;
+
+  ProgressBar PowerHourLeftTime;
+
+  Time &time;
+
+  bool drawUI = false;
+
+  HUD(Time &t) : time(t) {
+    PowerHourLeftTime.init(sf::Vector2f(50.f, 8.f), sf::Color(50, 50, 50),
+                           sf::Color(50, 168, 82),
+                           time.PowerHourFrequency.maxTime);
+    PowerHourLeftTime.centerOrigin();
+    PowerHourLeftTime.setScale(3 * settings::SCALE, settings::SCALE);
+    PowerHourLeftTime.warning_color = sf::Color(29, 102, 171);
+    PowerHourLeftTime.default_color = sf::Color(191, 161, 52);
+    StoreBtn.setFillColor(sf::Color(201, 134, 40));
+    StoreBtn.m_text.setString("Store?");
+    StoreBtn.setSize({StoreBtn.m_text.getGlobalBounds().width + 10, 100});
+    store_ui.setSize({300, 150});
+    store_ui.setFillColor(sf::Color::Transparent);
+    StoreBtn.onClick = [&]() { drawUI = !drawUI; };
+  }
+
+  void setPositions(sf::VideoMode &vm) {
+    WheatText.setPos({10, 10});
+    WheatText.setSize(12 * settings::SCALE);
+    AppleText.setPos({10, 40});
+    AppleText.setSize(12 * settings::SCALE);
+    PowerHourLeftTime.setPosition({(float)vm.width / 2, (float)vm.height - 20});
+    StoreBtn.setPosition(10, 100);
+    store_ui.setRect();
+    store_ui.setPosition(StoreBtn.getPosition() + sf::Vector2f(150, 10));
+  }
+
+  void update(float dt, sf::RenderWindow &window, sf::View &view,
+              Player &player) {
+    StoreBtn.update(window);
+    store_ui.update();
+    WheatText.setString("Wheat: " + std::to_string(player.wheat_count));
+    AppleText.setString("Apple: " + std::to_string(player.apple_count));
+    if (time.PowerHourFrequency.TimePassed >= time.PowerHourFrequency.maxTime) {
+
+      // Power hour Time!
+      time.PowerHourCountDown.TimePassed += dt;
+
+      float timeRemaining =
+          time.PowerHourCountDown.maxTime - time.PowerHourCountDown.TimePassed;
+
+      PowerHourLeftTime.updateValue(
+          (timeRemaining / time.PowerHourCountDown.maxTime) *
+              time.PowerHourFrequency.maxTime,
+          window, &window.getDefaultView());
+
+      if (time.PowerHourCountDown.TimePassed >
+          time.PowerHourCountDown.maxTime) {
+        time.PowerHourFrequency.TimePassed = 0.f;
+        time.PowerHourCountDown.TimePassed = 0.f;
+      }
+    } else {
+      time.PowerHourFrequency.TimePassed += dt;
+
+      // FIXED: Pass the unmoving HUD layout view context here too
+      PowerHourLeftTime.updateValue(time.PowerHourFrequency.maxTime -
+                                        time.PowerHourFrequency.TimePassed,
+                                    window, &window.getDefaultView());
+    }
+  }
+};
+
+#pragma once
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <functional>
+#include <optional>
+#include <stdexcept>
+
+class Button : public sf::Drawable, public sf::Transformable {
+private:
+  void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
+    target.draw(rect, states);
+    target.draw(m_text, states);
+  }
+
+public:
+  sf::Vector2f size;
+  sf::Text m_text;
+  sf::Font m_font;
+  sf::RectangleShape rect;
+  sf::Color FillColor;
+  std::optional<sf::Color> hoverColor;
+
+  std::function<void()> onClick;
+
+  bool isClickedLastFrame = false;
+
+  Button() {
+    if (!m_font.loadFromFile(
+            "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans-Bold.ttf")) {
+      throw std::runtime_error("unable to load font!");
+    }
+    m_text.setFont(m_font);
+
+    auto bounds = m_text.getLocalBounds();
+
+    m_text.setPosition(
+        getPosition().x + (size.x - bounds.width) / 2.f - bounds.left,
+        getPosition().y + (size.y - bounds.height) / 2.f - bounds.top);
+  }
+
+  void setSize(sf::Vector2f n_size) {
+    size = n_size;
+    rect.setSize(size);
+  }
+
+  void setFillColor(sf::Color n_color) {
+    FillColor = n_color;
+
+    if (!hoverColor) {
+      hoverColor = sf::Color(std::max(0, static_cast<int>(n_color.r) - 50),
+                             std::max(0, static_cast<int>(n_color.g) - 50),
+                             std::max(0, static_cast<int>(n_color.b) - 50));
+    }
+
+    rect.setFillColor(FillColor);
+  }
+
+  void setHoverColor(sf::Color n_color) { hoverColor = n_color; }
+
+  void update(sf::RenderWindow &window) {
+    rect.setPosition(getPosition());
+    auto bounds = m_text.getLocalBounds();
+
+    m_text.setPosition(
+        getPosition().x + (size.x - bounds.width) / 2.f - bounds.left,
+        getPosition().y + (size.y - bounds.height) / 2.f - bounds.top);
+
+    sf::Vector2f MousePos =
+        window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+    bool mousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
+    if (rect.getGlobalBounds().contains(MousePos)) {
+
+      rect.setFillColor(*hoverColor);
+
+      if (mousePressed && !isClickedLastFrame) {
+        if (onClick)
+          onClick();
+      }
+    } else {
+      rect.setFillColor(FillColor);
+    }
+
+    isClickedLastFrame = mousePressed;
+  }
+};

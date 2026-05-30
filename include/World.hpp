@@ -65,6 +65,14 @@ public:
     }
   }
 
+  void updateBatteryPos() {
+    for (size_t i = 0; i < batteries.size(); ++i) {
+      sf::Vector2f b_pos =
+          land.getIndex({1, static_cast<int>(5 + i + 1)}, false);
+      batteries[i]->setPosition(b_pos);
+    }
+  }
+
   void setPositions(Player &player) {
     player.setPosition({land.size.x / 2.f, land.size.y / 2.f});
     farm.setPosition(
@@ -75,9 +83,7 @@ public:
       land.markAsTaken(s);
     }
 
-    for (size_t i = 0; i < batteries.size(); ++i) {
-      batteries[i]->setPosition(land.getIndex({1, static_cast<int>(5 + i + 1)}));
-    }
+    updateBatteryPos();
 
     for (std::unique_ptr<sf::Sprite> &s : decorations) {
 

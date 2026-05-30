@@ -38,7 +38,7 @@ public:
   std::array<std::array<sf::Sprite, islandSize[1]>, islandSize[0]> tiles;
   std::vector<sf::Vector2f> taken; //! Vector where it can be array!
 
-  sf::Vector2f size; 
+  sf::Vector2f size;
 
   island() {
     // init & load
@@ -154,4 +154,28 @@ public:
       }
     }
   }
+
+  // sf::Vector2f getIndex(sf::Vector2i grid_i, bool markAsTaken = true,
+  //                       bool allowOnTop = false, bool silence = false) {
+  //   if (grid_i.x >= (int)tiles.size() || grid_i.x < 0) {
+  //     grid_i.x = 0;
+  //     if (!silence)
+  //       std::cerr << "Invalid grid position on 'x'" << std::endl;
+  //   }
+  //   if (grid_i.y >= (int)tiles[0].size() || grid_i.y < 0) {
+  //     grid_i.y = 0;
+  //     if (!silence)
+  //       std::cerr << "Invalid grid position on 'y'" << std::endl;
+  //   }
+  //   if (taken[grid_i.x][grid_i.y] && !allowOnTop)
+  //     throw std::logic_error("Position Marked as taken");
+
+  //   sf::Vector2f act_pos = tiles[grid_i.x][grid_i.y].getPosition();
+
+  //   if (markAsTaken) {
+  //     taken[grid_i.x][grid_i.y] = true;
+  //   }
+
+  //   return act_pos;
+  // }
 };

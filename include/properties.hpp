@@ -58,3 +58,7 @@ inline void setBackGroundColor(sf::Color &current, const sf::Color &to, float dt
 
   window.clear(settings::ClearSkyColor);
 }
+
+enum prices {
+  battery = 50
+};

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
 project(LostElectricity VERSION 1.0.0 LANGUAGES CXX)
 
-# Force C++17 or higher (SFML works great with standard modern C++)
-set(CMAKE_CXX_STANDARD 17)
+# Force C++23 or higher (SFML works great with standard modern C++)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 1. Find the SFML packages
@@ -12,7 +12,7 @@ find_package(SFML 2.5 REQUIRED COMPONENTS graphics window system)
 # 2. Define your executable and point it to your source file
 add_executable(${PROJECT_NAME} src/main.cpp)
 
-# 3. inlucde include
+# 3. include include
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # 4. Include SFML headers and link the library binaries to your executable

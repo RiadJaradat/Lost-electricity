@@ -4,13 +4,14 @@
 #include <SFML/Graphics.hpp>
 
 #include "AssetsManeger.hpp"
+#include "World.hpp"
 
 sf::VideoMode vm = sf::VideoMode::getDesktopMode();
 
 Player CameraTarget;
 World world;
 Time WorldTime;
-HUD hud(WorldTime);
+HUD hud(WorldTime, CameraTarget, world);
 
 sf::Clock GameClock;
 sf::View Camera;
@@ -77,6 +78,8 @@ int main() {
   nightOverlay.setSize(sf::Vector2f(vm.width, vm.height));
   nightOverlay.setPosition(0.f, 0.f);
 
+  CameraTarget.wheat_count += 99999;
+
   setPositions();
 
   while (window.isOpen()) {
@@ -96,11 +99,6 @@ int main() {
     window.draw(hud);
 
     window.display();
-
-    #ifdef NDEBUG
-    #else
-    std::printf("FPS: %f\n", 1.f / deltaT);
-    #endif
   }
 
   return 0;
