@@ -14,8 +14,10 @@
 #include "Time.hpp"
 #include "World.hpp"
 #include "battery.hpp"
+#include "container.hpp"
 #include "player_obj.hpp"
 #include "properties.hpp"
+#include "ui_base.hpp"
 #include "ui_element.hpp"
 
 class HUD : public sf::Drawable {
@@ -57,13 +59,14 @@ public:
   ProgressBar PowerHourLeftTime;
 
   Time &time;
+  World &world;
 
   bool drawUI = false;
   bool drawUI1 = false;
 
   float fps;
 
-  HUD(Time &t, Player &player, World &world) : time(t) {
+  HUD(Time &t, Player &player, World &world_) : time(t), world(world_) {
     PowerHourLeftTime.init(sf::Vector2f(50.f, 8.f), sf::Color(50, 50, 50),
                            sf::Color(50, 168, 82),
                            time.PowerHourFrequency.maxTime);
@@ -76,9 +79,9 @@ public:
     StoreBtn.setSize({StoreBtn.m_text.getGlobalBounds().width + 10, 100});
     store_ui.setSize({300, 150});
     store_ui.setRect();
-    store_ui.sprt.setScale(
-        {store_ui.rect.getSize().x / store_ui.sprt.getGlobalBounds().width,
-         store_ui.rect.getSize().y / store_ui.sprt.getGlobalBounds().height});
+    store_ui.setScale(
+        {store_ui.rect.getSize().x / store_ui.getGlobalBounds().width,
+         store_ui.rect.getSize().y / store_ui.getGlobalBounds().height});
     BuyBtn.setFillColor(sf::Color(201, 134, 40));
     BuyBtn.m_text.setString("Buy?");
     BuyBtn.setSize({BuyBtn.m_text.getGlobalBounds().width + 10, 50});
@@ -98,12 +101,12 @@ public:
     Manage_ui.setSize({400, 600 });
     // Manage_ui.setRect();
     // *TODO  make this inside the UI obj
-    Manage_ui.sprt.setTextureRect(
+    Manage_ui.setTextureRect(
         sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 1,
                     settings::TILE_SIZE, settings::TILE_SIZE * 2));
-    Manage_ui.sprt.setScale(
-        {Manage_ui.rect.getSize().x / Manage_ui.sprt.getGlobalBounds().width,
-         Manage_ui.rect.getSize().y / Manage_ui.sprt.getGlobalBounds().height});
+    Manage_ui.setScale(
+        {Manage_ui.rect.getSize().x / Manage_ui.getGlobalBounds().width,
+         Manage_ui.rect.getSize().y / Manage_ui.getGlobalBounds().height});
     ManageBtn.onClick = [&]() { drawUI1 = !drawUI1; };
   }
 
@@ -119,6 +122,12 @@ public:
     store_ui.children.push_back(BuyBtn);
     ManageBtn.setPosition(10, 210);
     Manage_ui.setPosition(ManageBtn.getPosition() + sf::Vector2f(150, 10));
+    for (auto &b : world.batteries) {
+      container c(*b);
+      c.setPosition(sf::Vector2f(0, 0));
+
+      Manage_ui.children.push_back(c); 
+    }
   }
 
   void update(float dt, sf::RenderWindow &window, sf::View &view,

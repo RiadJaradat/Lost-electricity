@@ -1,12 +1,12 @@
 #pragma once
 
+#include "ui_base.hpp"
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Color.hpp>
 #include <functional>
 #include <optional>
 #include <stdexcept>
 
-class Button : public sf::Drawable, public sf::Transformable {
+class Button : public UIBase {
 private:
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
     target.draw(rect, states);
@@ -17,7 +17,6 @@ public:
   sf::Vector2f size;
   sf::Text m_text;
   sf::Font m_font;
-  sf::RectangleShape rect;
   sf::Color FillColor;
   std::optional<sf::Color> hoverColor;
 
@@ -58,7 +57,7 @@ public:
 
   void setHoverColor(sf::Color n_color) { hoverColor = n_color; }
 
-  void update(sf::RenderWindow &window) {
+  void update(sf::RenderWindow &window) override {
     rect.setPosition(getPosition());
     auto bounds = m_text.getLocalBounds();
 
