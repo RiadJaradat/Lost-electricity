@@ -25,8 +25,11 @@ private:
     target.draw(AppleText, states);
     target.draw(PowerHourLeftTime, states);
     target.draw(StoreBtn, states);
+    target.draw(ManageBtn, states);
     if (drawUI)
       target.draw(store_ui, states);
+    if (drawUI1)
+      target.draw(Manage_ui, states);
 
 #ifdef NDEBUG
 #else
@@ -42,15 +45,21 @@ private:
 public:
   Text WheatText;
   Text AppleText;
+  //*TODO make a store class that has all the store code
   Button StoreBtn;
   ui_element store_ui;
   Button BuyBtn;
+  // batteries?
+  //*TODO make the Manage button actually show the batterieS
+  Button ManageBtn;
+  ui_element Manage_ui;
 
   ProgressBar PowerHourLeftTime;
 
   Time &time;
 
   bool drawUI = false;
+  bool drawUI1 = false;
 
   float fps;
 
@@ -70,7 +79,6 @@ public:
     store_ui.sprt.setScale(
         {store_ui.rect.getSize().x / store_ui.sprt.getGlobalBounds().width,
          store_ui.rect.getSize().y / store_ui.sprt.getGlobalBounds().height});
-    store_ui.setSize({300, 150});
     BuyBtn.setFillColor(sf::Color(201, 134, 40));
     BuyBtn.m_text.setString("Buy?");
     BuyBtn.setSize({BuyBtn.m_text.getGlobalBounds().width + 10, 50});
@@ -84,6 +92,19 @@ public:
       world.batteries.push_back(std::make_unique<Battery>());
       world.updateBatteryPos();
     };
+    ManageBtn.setFillColor(sf::Color(201, 134, 40));
+    ManageBtn.m_text.setString("Manage?");
+    ManageBtn.setSize({ManageBtn.m_text.getGlobalBounds().width + 10, 100});
+    Manage_ui.setSize({400, 600 });
+    // Manage_ui.setRect();
+    // *TODO  make this inside the UI obj
+    Manage_ui.sprt.setTextureRect(
+        sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 1,
+                    settings::TILE_SIZE, settings::TILE_SIZE * 2));
+    Manage_ui.sprt.setScale(
+        {Manage_ui.rect.getSize().x / Manage_ui.sprt.getGlobalBounds().width,
+         Manage_ui.rect.getSize().y / Manage_ui.sprt.getGlobalBounds().height});
+    ManageBtn.onClick = [&]() { drawUI1 = !drawUI1; };
   }
 
   void setPositions(sf::VideoMode &vm) {
@@ -96,12 +117,16 @@ public:
     store_ui.setPosition(StoreBtn.getPosition() + sf::Vector2f(150, 10));
     BuyBtn.setPosition(store_ui.getPosition() + sf::Vector2f(20.f, 20.f));
     store_ui.children.push_back(BuyBtn);
+    ManageBtn.setPosition(10, 210);
+    Manage_ui.setPosition(ManageBtn.getPosition() + sf::Vector2f(150, 10));
   }
 
   void update(float dt, sf::RenderWindow &window, sf::View &view,
               Player &player) {
     StoreBtn.update(window);
+    ManageBtn.update(window);
     store_ui.update(window);
+    Manage_ui.update(window);
     WheatText.setString("Wheat: " + std::to_string(player.wheat_count));
     AppleText.setString("Apple: " + std::to_string(player.apple_count));
     if (time.PowerHourFrequency.TimePassed >= time.PowerHourFrequency.maxTime) {

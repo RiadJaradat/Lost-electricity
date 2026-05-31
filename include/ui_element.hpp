@@ -6,7 +6,6 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <vector>
 
-
 #include "AssetsManeger.hpp"
 #include "properties.hpp"
 
@@ -44,9 +43,13 @@ public:
     rect.setFillColor(FillColor);
   }
 
-  void setRect() {
-    sprt.setTextureRect(sf::IntRect(
-        settings::TILE_SIZE, 0, settings::TILE_SIZE * 2, settings::TILE_SIZE));
+  void setRect(bool isVerticall = false) {
+    if (!isVerticall) {
+      sprt.setTextureRect(sf::IntRect(settings::TILE_SIZE, 0,
+                                      settings::TILE_SIZE * 2,
+                                      settings::TILE_SIZE));
+    } else {
+    }
   }
 
   void setSquare() {

@@ -78,8 +78,6 @@ int main() {
   nightOverlay.setSize(sf::Vector2f(vm.width, vm.height));
   nightOverlay.setPosition(0.f, 0.f);
 
-  CameraTarget.wheat_count += 99999;
-
   setPositions();
 
   while (window.isOpen()) {
