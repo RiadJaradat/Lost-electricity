@@ -4,14 +4,11 @@
 #include <SFML/Graphics.hpp>
 
 #include "AssetsManeger.hpp"
-#include "World.hpp"
+#include "Game.hpp"
 
 sf::VideoMode vm = sf::VideoMode::getDesktopMode();
 
-Player CameraTarget;
-World world;
-Time WorldTime;
-HUD hud(WorldTime, CameraTarget, world);
+Game MainGame;
 
 sf::Clock GameClock;
 sf::View Camera;
@@ -20,17 +17,17 @@ sf::Color currentSkyColor = settings::DayColor;
 sf::RectangleShape nightOverlay;
 
 void setPositions() {
-  world.setPositions(CameraTarget);
-  hud.setPositions(vm);
+  MainGame.world.setPositions(MainGame.CameraTarget);
+  MainGame.hud.setPositions(vm);
 }
 
 void update(float dt) {
 
-  CameraTarget.update(dt);
-  Camera.setCenter(CameraTarget.pos);
-  WorldTime.update(dt, window, Camera, currentSkyColor, nightOverlay);
-  world.update(dt, window, Camera, CameraTarget);
-  hud.update(dt, window, Camera, CameraTarget);
+  MainGame.CameraTarget.update(dt);
+  Camera.setCenter(MainGame.CameraTarget.pos);
+  MainGame.WorldTime.update(dt, window, Camera, currentSkyColor, nightOverlay);
+  MainGame.world.update(dt, window, Camera, MainGame.CameraTarget);
+  MainGame.hud.update(dt, window, Camera, MainGame.CameraTarget);
 
   window.setView(Camera);
 }
@@ -42,8 +39,8 @@ void eventLoop(sf::Event &event) {
 
     else if (event.type == sf::Event::KeyPressed) {
       if (event.key.code == sf::Keyboard::Key::Escape)
-        if (CameraTarget.has_target)
-          CameraTarget.cancel_move_to();
+        if (MainGame.CameraTarget.has_target)
+          MainGame.CameraTarget.cancel_move_to();
 
     }
 
@@ -90,11 +87,11 @@ int main() {
     window.clear();
 
     update(deltaT);
-    window.draw(world);
+    window.draw(MainGame.world);
 
     window.setView(window.getDefaultView());
     window.draw(nightOverlay);
-    window.draw(hud);
+    window.draw(MainGame.hud);
 
     window.display();
   }

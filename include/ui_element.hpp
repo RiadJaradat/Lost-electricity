@@ -16,7 +16,7 @@ private:
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
     target.draw((sf::Sprite)*this, states);
     for (auto &d : children)
-      target.draw(d, states);
+      target.draw(*d, states);
     target.draw(rect, states);
   }
 
@@ -26,7 +26,7 @@ public:
   sf::RectangleShape rect;
   sf::Vector2f size;
   sf::Color FillColor;
-  std::vector<UIBase> children;
+  std::vector<UIBase*> children;
   ui_element() {
     children.reserve(RESERVED_CHILDREN);
     setFillColor(sf::Color::Transparent);
@@ -61,7 +61,7 @@ public:
     rect.setPosition(getPosition());
     setPosition(rect.getPosition());
     for (auto &d : children) {
-      d.update(window);
+      d->update(window);
     }
   }
 };
