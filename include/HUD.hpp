@@ -66,33 +66,35 @@ public:
               Player &player) {
     store.update(window);
     manage.update(window);
+    
     WheatText.setString("Wheat: " + std::to_string(player.wheat_count));
     AppleText.setString("Apple: " + std::to_string(player.apple_count));
+
+    fps = (1.f / dt);
 
     bool powerHourActive =
         time.PowerHourFrequency.TimePassed >= time.PowerHourFrequency.maxTime;
 
-    if (powerHourActive) {
-      time.PowerHourCountDown.TimePassed += dt;
-      float timeRemaining =
-          time.PowerHourCountDown.maxTime - time.PowerHourCountDown.TimePassed;
-      PowerHourLeftTime.updateValue(
-          (timeRemaining / time.PowerHourCountDown.maxTime) *
-              time.PowerHourFrequency.maxTime,
-          window, &window.getDefaultView());
-      bool PowerHourFinish =
-          time.PowerHourCountDown.TimePassed > time.PowerHourCountDown.maxTime;
-      if (PowerHourFinish) {
-        time.PowerHourFrequency.TimePassed = 0.f;
-        time.PowerHourCountDown.TimePassed = 0.f;
-      }
-    } else {
+    if (!powerHourActive) {
       time.PowerHourFrequency.TimePassed += dt;
-      PowerHourLeftTime.updateValue(time.PowerHourFrequency.maxTime -
-                                        time.PowerHourFrequency.TimePassed,
-                                    window, &window.getDefaultView());
+
+      float newValue =
+          time.PowerHourFrequency.maxTime - time.PowerHourFrequency.TimePassed;
+
+      PowerHourLeftTime.updateValue(newValue, window, &window.getDefaultView());
+      return;
     }
 
-    fps = (1.f / dt);
+    time.PowerHourCountDown.TimePassed += dt;
+    float timeRemaining =
+        time.PowerHourCountDown.maxTime - time.PowerHourCountDown.TimePassed;
+    float newValue = (timeRemaining / time.PowerHourCountDown.maxTime) *
+                     time.PowerHourFrequency.maxTime;
+
+    PowerHourLeftTime.updateValue(newValue, window, &window.getDefaultView());
+    if (time.PowerHourCountDown.TimePassed > time.PowerHourCountDown.maxTime) {
+      time.PowerHourFrequency.TimePassed = 0.f;
+      time.PowerHourCountDown.TimePassed = 0.f;
+    }
   }
 };

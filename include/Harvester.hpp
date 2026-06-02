@@ -76,7 +76,8 @@ public:
 
   template <size_t X, size_t Y>
   void update(float dt, std::array<std::array<Plant, X>, Y> &plants,
-              int &wheat_count, int &apple_count, sf::Vector2f farmPosition, sf::RenderWindow &window, sf::View *v) {
+              int &wheat_count, int &apple_count, sf::Vector2f farmPosition,
+              sf::RenderWindow &window, sf::View *v) {
 
     if (power <= 0) {
 
@@ -91,24 +92,20 @@ public:
         }
       }
 
-      if (battery != nullptr) {
-        if (fly_to(battery->getPosition() - farmPosition + offset, dt)) {
+      if (fly_to(battery->getPosition() - farmPosition + offset, dt)) {
 
-          onCharge.TimePassed += dt;
+        onCharge.TimePassed += dt;
 
-          if (onCharge.TimePassed > onCharge.maxTime) {
-            float incomingEnergy = 0.f;
-            battery->take(incomingEnergy, window, v);
-
-            // Safely apply and clamp the energy transfer
-            power += incomingEnergy;
-            if (power > maxPower) {
-              power = maxPower; // Keeps the harvester strictly at 10.f max
-            }
-            onCharge.TimePassed = 0.f;
+        if (onCharge.TimePassed > onCharge.maxTime) {
+          float incomingEnergy = 0.f;
+          battery->take(incomingEnergy, window, v);
+          power += incomingEnergy;
+          if (power > maxPower) {
+            power = maxPower; // Keeps the harvester strictly at 10.f max
           }
+          onCharge.TimePassed = 0.f;
         }
-      } 
+      }
 
       return;
     }
@@ -116,50 +113,48 @@ public:
     power -= dt;
     powerBar.updateValue(power, window, v);
 
-    if (fly_to(plants[farm_i.x][farm_i.y].getPosition() + offset, dt)) {
-
-      onPlant.TimePassed += dt;
-
-      if (onPlant.TimePassed >= onPlant.maxTime) {
-        onPlant.TimePassed = 0.f;
-
-        Plant &p = plants[farm_i.x][farm_i.y];
-
-        fly_to(p.getPosition() + offset, dt);
-
-        if (!p.isWatered) {
-          p.isWatered = true;
-          p.watered.TimePassed = 0;
-        }
-        if (p.isReady) {
-          p.state = Ripeness::SEED;
-          p.isReady = false;
-          p.isWatered = true;
-          p.growth.TimePassed = 0.f;
-          p.watered.TimePassed = 0.f;
-          if (p.isApple)
-            apple_count++;
-          else
-            wheat_count++;
-
-          p.setTextureRect(sf::IntRect(settings::TILE_SIZE * (int)p.state,
-                                       settings::TILE_SIZE * (int)p.isApple,
-                                       settings::TILE_SIZE,
-                                       settings::TILE_SIZE));
-        }
-
-        if (farm_i.x < X - 1) {
-          farm_i.x++;
-        } else if (farm_i.y < Y - 1) {
-          farm_i.y++;
-          farm_i.x = 0;
-        } else {
-          farm_i.x = 0;
-          farm_i.y = 0;
-        }
-      }
-    } else {
+    if (!fly_to(plants[farm_i.x][farm_i.y].getPosition() + offset, dt)) {
       onPlant.TimePassed = 0.f;
+      return;
+    }
+    onPlant.TimePassed += dt;
+
+    if (onPlant.TimePassed >= onPlant.maxTime) {
+      onPlant.TimePassed = 0.f;
+
+      Plant &p = plants[farm_i.x][farm_i.y];
+
+      fly_to(p.getPosition() + offset, dt);
+
+      if (!p.isWatered) {
+        p.isWatered = true;
+        p.watered.TimePassed = 0;
+      }
+      if (p.isReady) {
+        p.state = Ripeness::SEED;
+        p.isReady = false;
+        p.isWatered = true;
+        p.growth.TimePassed = 0.f;
+        p.watered.TimePassed = 0.f;
+        if (p.isApple)
+          apple_count++;
+        else
+          wheat_count++;
+
+        p.setTextureRect(sf::IntRect(settings::TILE_SIZE * (int)p.state,
+                                     settings::TILE_SIZE * (int)p.isApple,
+                                     settings::TILE_SIZE, settings::TILE_SIZE));
+      }
+
+      if (farm_i.x < X - 1) {
+        farm_i.x++;
+      } else if (farm_i.y < Y - 1) {
+        farm_i.y++;
+        farm_i.x = 0;
+      } else {
+        farm_i.x = 0;
+        farm_i.y = 0;
+      }
     }
   }
 

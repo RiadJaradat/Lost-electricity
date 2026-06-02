@@ -8,10 +8,10 @@
 #include <vector>
 
 #include "AssetsManeger.hpp"
-#include "battery.hpp"
-#include "properties.hpp"
-#include "plant.hpp"
 #include "Harvester.hpp"
+#include "battery.hpp"
+#include "plant.hpp"
+#include "properties.hpp"
 
 class Farm : public sf::Drawable, public sf::Transformable {
 private:
@@ -32,7 +32,6 @@ private:
 
     target.draw(harvester, states);
     target.draw(harvester.powerBar, states);
-
   }
 
 public:
@@ -43,9 +42,10 @@ public:
 
   sf::Vector2i size;
 
-  Harvester harvester; 
+  Harvester harvester;
 
-  Farm(std::vector<std::unique_ptr<Battery>> &batteries) : harvester(batteries) {
+  Farm(std::vector<std::unique_ptr<Battery>> &batteries)
+      : harvester(batteries) {
 
     for (int x = 0; x < tiles.size(); ++x) {
       for (int y = 0; y < tiles[x].size(); ++y) {
@@ -53,45 +53,25 @@ public:
 
         s.setTexture(Assets::DirtTile);
 
-        if (x == 0 && y == 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 0,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x == tiles.size() - 1 && y == tiles[x].size() - 1) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 2, settings::TILE_SIZE * 2,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x == 0 && y == tiles[x].size() - 1) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 2,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x == tiles.size() - 1 && y > 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 2, settings::TILE_SIZE * 1,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x == tiles.size() - 1 && y == 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 2, settings::TILE_SIZE * 0,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (y == 0 && x > 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 1, settings::TILE_SIZE * 0,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x == 0 && y > 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 1,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (y == tiles[x].size() - 1 && x > 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 1, settings::TILE_SIZE * 2,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 1, settings::TILE_SIZE * 1,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        }
+        int tx = 1;
+        int ty = 1;
+
+        if (x == 0)
+          tx = 0;
+        else if (x == tiles.size() - 1)
+          tx = 2;
+
+        if (y == 0)
+          ty = 0;
+        else if (y == tiles[x].size() - 1)
+          ty = 2;
+
+        s.setTextureRect(sf::IntRect(tx * settings::TILE_SIZE,
+                                     ty * settings::TILE_SIZE,
+                                     settings::TILE_SIZE, settings::TILE_SIZE));
 
         s.setScale({settings::SCALE, settings::SCALE});
+
         s.setPosition({(float)x * settings::DISPLAY_SCALE,
                        (float)y * settings::DISPLAY_SCALE});
       }
@@ -128,14 +108,15 @@ public:
     return tiles[grid_i.x][grid_i.y].getPosition();
   }
 
-  void update(float dt, int &wheat_count, int &apple_count, sf::RenderWindow &window, sf::View *v) {
+  void update(float dt, int &wheat_count, int &apple_count,
+              sf::RenderWindow &window, sf::View *v) {
     for (auto &plantArray : plants) {
       for (Plant &p : plantArray) {
         p.update(dt);
       }
     }
 
-    harvester.update(dt, plants, wheat_count, apple_count, getPosition(), window, v);
+    harvester.update(dt, plants, wheat_count, apple_count, getPosition(),
+                     window, v);
   }
-
 };

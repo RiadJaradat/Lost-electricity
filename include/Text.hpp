@@ -11,10 +11,6 @@ private:
   sf::Font m_font;
   sf::Text m_text;
 
-  // FIX: Do NOT multiply m_text.getTransform() here manually.
-  // sf::Text applies its own transform internally when drawn via
-  // target.draw(m_text, states), so doing it manually first causes
-  // the position to be applied twice — doubling it visually.
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
     target.draw(m_text, states);
   }
@@ -22,25 +18,22 @@ private:
 public:
   Text() {
     if (!m_font.loadFromFile(
-            "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans-Bold.ttf")) {
+            "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans-Bold.ttf"))
       std::cerr << "Text Class Error: Could not load font file!" << std::endl;
-    }
     m_text.setFont(m_font);
     m_text.setCharacterSize(24);
     m_text.setFillColor(sf::Color::White);
   }
 
   void setString(const std::string &str) { m_text.setString(str); }
-
-  void setPos(float x, float y)  { m_text.setPosition(x, y); }
-  void setPos(sf::Vector2f pos)  { m_text.setPosition(pos); }
-
+  void setPos(float x, float y) { m_text.setPosition(x, y); }
+  void setPos(sf::Vector2f pos) { m_text.setPosition(pos); }
   void setSize(unsigned int size) { m_text.setCharacterSize(size); }
-  void setColor(sf::Color color)  { m_text.setFillColor(color); }
-  void setOrigin(float x, float y){ m_text.setOrigin(x, y); }
-  void setScale(sf::Vector2f s)   { m_text.setScale(s); }
+  void setColor(sf::Color color) { m_text.setFillColor(color); }
+  void setOrigin(float x, float y) { m_text.setOrigin(x, y); }
+  void setScale(sf::Vector2f s) { m_text.setScale(s); }
 
-  sf::Transform getTransform()   const { return m_text.getTransform(); }
+  sf::Transform getTransform() const { return m_text.getTransform(); }
   sf::FloatRect getLocalBounds() const { return m_text.getLocalBounds(); }
-  sf::FloatRect getGlobalBounds()const { return m_text.getGlobalBounds(); }
+  sf::FloatRect getGlobalBounds() const { return m_text.getGlobalBounds(); }
 };

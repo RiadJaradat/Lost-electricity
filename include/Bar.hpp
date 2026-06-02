@@ -27,24 +27,19 @@ public:
 
   ProgressBar() : m_maxValue(100.f), m_currentValue(100.f) {}
 
-  // Initializes the size, colors, and maximum bounds of the status bar
   void init(sf::Vector2f size, sf::Color bgCol, sf::Color fgCol,
             float maxValue) {
     m_maxValue = maxValue;
     m_currentValue = maxValue;
 
-    // Configure background shell
     m_background.setSize(size);
     m_background.setFillColor(bgCol);
 
-    // Configure moving inner foreground bar
     m_foreground.setSize(size);
     m_foreground.setFillColor(fgCol);
     default_color = fgCol;
   }
 
-  // Added an optional targetView parameter that defaults to the window's
-  // current active view
   void updateValue(float value, sf::RenderWindow &window,
                    const sf::View *targetView) {
     m_currentValue = std::max(0.f, std::min(value, m_maxValue));
@@ -58,7 +53,6 @@ public:
 
     sf::Vector2i mousePixelPos = sf::Mouse::getPosition(window);
 
-    // FIXED: Convert pixels using the specific view context if one is provided
     sf::Vector2f mouseWorldPos =
         targetView ? window.mapPixelToCoords(mousePixelPos, *targetView)
                    : window.mapPixelToCoords(mousePixelPos);

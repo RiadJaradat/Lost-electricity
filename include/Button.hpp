@@ -70,18 +70,15 @@ public:
 
     bool mousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
-    if (rect.getGlobalBounds().contains(MousePos)) {
-
+    if (!rect.getGlobalBounds().contains(MousePos))
+      rect.setFillColor(FillColor);
+    
+    else {
       rect.setFillColor(*hoverColor);
 
-      if (mousePressed && !isClickedLastFrame) {
-        if (onClick)
-          onClick();
-      }
-    } else {
-      rect.setFillColor(FillColor);
+      if (mousePressed && !isClickedLastFrame && onClick)
+        onClick();
     }
-
     isClickedLastFrame = mousePressed;
   }
 };

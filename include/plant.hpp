@@ -19,10 +19,6 @@ public:
 
   Timer growth;
   Timer watered;
- 
-//   float TimePassed = 0.f;
-//   float growthTime = 10.f;
-//   float drayTime = 20.f;
 
   bool isApple = false;
 

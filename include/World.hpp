@@ -9,7 +9,6 @@
 class World : public sf::Drawable {
 private:
   float flowerToBladeRatio = 0.15;
-  bool wasMousePressedLastFrame = false;
 
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
     target.draw(land, states);
@@ -27,7 +26,7 @@ public:
   island land;
   Farm farm;
   std::vector<std::unique_ptr<Battery>> batteries;
-  std::vector<std::unique_ptr<sf::Sprite>> decorations;
+  std::vector<std::unique_ptr<sf::Sprite>> decorations; //! vector where it could be array
 
   World() : farm(batteries) {
 
@@ -48,18 +47,20 @@ public:
 
       s->setTexture(Assets::GrassBiomTile);
 
-      if (rand > flowerToBladeRatio) {
-        s->setTextureRect(
-            sf::IntRect(settings::TILE_SIZE * 5, settings::TILE_SIZE * 1,
-                        settings::TILE_SIZE, settings::TILE_SIZE));
-        s->setScale(settings::SCALE, settings::SCALE);
-      } else {
-        s->setTextureRect(
-            sf::IntRect(settings::TILE_SIZE * 7, settings::TILE_SIZE * 2,
-                        settings::TILE_SIZE, settings::TILE_SIZE));
+      int tx = 1;
+      int ty = 1;
 
-        s->setScale(settings::SCALE, settings::SCALE);
+      if (rand > flowerToBladeRatio)
+        tx = 5;
+      else {
+        tx = 7;
+        ty = 2;
       }
+
+      s->setTextureRect(sf::IntRect(settings::TILE_SIZE * tx,
+                                    settings::TILE_SIZE * ty,
+                                    settings::TILE_SIZE, settings::TILE_SIZE));
+      s->setScale(settings::SCALE, settings::SCALE);
 
       decorations.push_back(std::move(s));
     }
@@ -79,14 +80,12 @@ public:
         land.getIndex({(int)std::round(land.tiles.size() - farm.size.x - 1),
                        (int)std::round(land.tiles[0].size() - farm.size.y - 1)},
                       false));
-    for (auto &s : farm.tiles) {
+    for (auto &s : farm.tiles)
       land.markAsTaken(s);
-    }
 
     updateBatteryPos();
 
     for (std::unique_ptr<sf::Sprite> &s : decorations) {
-
       sf::Vector2i randomPos = {genRand<int>(0, land.tiles.size() - 1),
                                 genRand<int>(0, land.tiles[0].size() - 1)};
 
@@ -100,10 +99,8 @@ public:
 
     for (const auto &battery : batteries) {
       battery->Capacity += 10.f;
-
-      if (battery->Capacity >= battery->maxCapacity) {
+      if (battery->Capacity >= battery->maxCapacity)
         battery->Capacity = battery->maxCapacity;
-      }
     }
 
     for (auto &b : batteries)

@@ -25,12 +25,12 @@ public:
       isDay = !isDay;
     }
 
-    if (isDay) {
-      setBackGroundColor(currentSkyColor, settings::DayColor, dt, nightOverlay,
-                         window);
-    } else {
+    if (!isDay) {
       setBackGroundColor(currentSkyColor, settings::NightColor, dt,
                          nightOverlay, window);
+      return;
     }
+    setBackGroundColor(currentSkyColor, settings::DayColor, dt, nightOverlay,
+                       window);
   }
 };

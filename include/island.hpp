@@ -49,44 +49,22 @@ public:
 
         s.setTexture(Assets::GrassTile);
 
-        if (x == 0 && y == 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 0,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x == tiles.size() - 1 && y == 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 2, settings::TILE_SIZE * 0,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x == tiles.size() - 1 && y == tiles[x].size() - 1) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 2, settings::TILE_SIZE * 2,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x == 0 && y == tiles[x].size() - 1) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 2,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x > 0 && y == 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 1, settings::TILE_SIZE * 0,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x == 0 && y > 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 0, settings::TILE_SIZE * 1,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
+        int tx = 1;
+        int ty = 1;
 
-        } else if (x == tiles.size() - 1 && y > 0) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 2, settings::TILE_SIZE * 1,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else if (x > 0 && y == tiles[x].size() - 1) {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 1, settings::TILE_SIZE * 2,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        } else {
-          s.setTextureRect(
-              sf::IntRect(settings::TILE_SIZE * 1, settings::TILE_SIZE * 1,
-                          settings::TILE_SIZE, settings::TILE_SIZE));
-        }
+        if (x == 0)
+          tx = 0;
+        else if (x == tiles.size() - 1)
+          tx = 2;
+
+        if (y == 0)
+          ty = 0;
+        else if (y == tiles[x].size() - 1)
+          ty = 2;
+
+        s.setTextureRect(sf::IntRect(tx * settings::TILE_SIZE,
+                                     ty * settings::TILE_SIZE,
+                                     settings::TILE_SIZE, settings::TILE_SIZE));
 
         s.setScale({settings::SCALE, settings::SCALE});
         s.setPosition({(float)x * settings::DISPLAY_SCALE,
@@ -137,8 +115,6 @@ public:
   template <typename iterable> void markAsTaken(iterable &List) {
     for (auto &l : List) {
       sf::Vector2f pos = l.getPosition();
-      // Skip marking coordinates if they haven't been given real world
-      // positions yet
       if (pos.x == 0.f && pos.y == 0.f)
         continue;
 
@@ -154,28 +130,4 @@ public:
       }
     }
   }
-
-  // sf::Vector2f getIndex(sf::Vector2i grid_i, bool markAsTaken = true,
-  //                       bool allowOnTop = false, bool silence = false) {
-  //   if (grid_i.x >= (int)tiles.size() || grid_i.x < 0) {
-  //     grid_i.x = 0;
-  //     if (!silence)
-  //       std::cerr << "Invalid grid position on 'x'" << std::endl;
-  //   }
-  //   if (grid_i.y >= (int)tiles[0].size() || grid_i.y < 0) {
-  //     grid_i.y = 0;
-  //     if (!silence)
-  //       std::cerr << "Invalid grid position on 'y'" << std::endl;
-  //   }
-  //   if (taken[grid_i.x][grid_i.y] && !allowOnTop)
-  //     throw std::logic_error("Position Marked as taken");
-
-  //   sf::Vector2f act_pos = tiles[grid_i.x][grid_i.y].getPosition();
-
-  //   if (markAsTaken) {
-  //     taken[grid_i.x][grid_i.y] = true;
-  //   }
-
-  //   return act_pos;
-  // }
 };
