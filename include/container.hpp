@@ -3,10 +3,6 @@
 #include "Text.hpp"
 #include "battery.hpp"
 #include "ui_base.hpp"
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/Vector2.hpp>
-#include <string>
 
 class container : public UIBase {
 public:
@@ -32,6 +28,8 @@ public:
 
   }
 
+  //* kind note: you have to update the values manually
+  // *TODO make this not the case
   void update(sf::RenderWindow &window) override {
     Capacity.setString("Capacity: " + std::to_string(battery.Capacity));
     degradation.setString("Degradation: " +

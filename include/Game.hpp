@@ -1,5 +1,6 @@
 #pragma once
 
+// #include "HUD.hpp"
 #include <GameObjects.hpp>
 
 class Game {
@@ -7,9 +8,8 @@ public:
   World world;
   Time WorldTime;
   Player CameraTarget;
-  HUD hud;
 
-  Game() : hud(WorldTime) {}
+  Game() {} // : hud(WorldTime) {}
 
   void BuyBattery() {
     if (CameraTarget.wheat_count - prices::battery < 0) {

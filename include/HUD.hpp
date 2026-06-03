@@ -3,10 +3,11 @@
 #include <SFML/Graphics.hpp>
 
 #include "Bar.hpp"
+#include "Game.hpp"
 #include "Manage.hpp"
 #include "Store.hpp"
 #include "Text.hpp"
-#include "Time.hpp"
+#include "Time.hpp" 
 #include "player_obj.hpp"
 #include "properties.hpp"
 
@@ -42,7 +43,7 @@ public:
 
   float fps;
 
-  HUD(Time &t) : time(t) {
+  HUD(Time &t, Game &g_) : time(t), store(g_) {
     PowerHourLeftTime.init(sf::Vector2f(50.f, 8.f), sf::Color(50, 50, 50),
                            sf::Color(50, 168, 82),
                            time.PowerHourFrequency.maxTime);

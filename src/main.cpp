@@ -2,13 +2,13 @@
 
 #include <GameObjects.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Event.hpp>
 
 #include "AssetsManeger.hpp"
 #include "Game.hpp"
+#include "HUD.hpp"
 
 sf::VideoMode vm = sf::VideoMode::getDesktopMode();
-
-Game MainGame;
 
 sf::Clock GameClock;
 sf::View Camera;
@@ -16,9 +16,13 @@ sf::RenderWindow window(vm, "Lost Electricity", sf::Style::Fullscreen);
 sf::Color currentSkyColor = settings::DayColor;
 sf::RectangleShape nightOverlay;
 
+
+Game MainGame;
+HUD hud(MainGame.WorldTime, MainGame);
+
 void setPositions() {
   MainGame.world.setPositions(MainGame.CameraTarget);
-  MainGame.hud.setPositions(vm);
+  hud.setPositions(vm);
 }
 
 void update(float dt) {
@@ -27,7 +31,7 @@ void update(float dt) {
   Camera.setCenter(MainGame.CameraTarget.pos);
   MainGame.WorldTime.update(dt, window, Camera, currentSkyColor, nightOverlay);
   MainGame.world.update(dt, window, Camera, MainGame.CameraTarget);
-  MainGame.hud.update(dt, window, Camera, MainGame.CameraTarget);
+  hud.update(dt, window, Camera, MainGame.CameraTarget);
 
   window.setView(Camera);
 }
@@ -41,7 +45,6 @@ void eventLoop(sf::Event &event) {
       if (event.key.code == sf::Keyboard::Key::Escape)
         if (MainGame.CameraTarget.has_target)
           MainGame.CameraTarget.cancel_move_to();
-
     }
 
     else if (event.type == sf::Event::MouseWheelScrolled) {
@@ -91,7 +94,7 @@ int main() {
 
     window.setView(window.getDefaultView());
     window.draw(nightOverlay);
-    window.draw(MainGame.hud);
+    window.draw(hud);
 
     window.display();
   }

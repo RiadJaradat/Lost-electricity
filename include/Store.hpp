@@ -3,14 +3,18 @@
 #include "Button.hpp"
 #include "ui_base.hpp"
 #include "ui_element.hpp"
+#include "Game.hpp"
 
 class Store : public UIBase {
 private:
+
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
     target.draw(StoreBtn, states);
     if (drawUI)
       target.draw(store_ui, states);
   }
+
+  Game &game;
 
 public:
   Button StoreBtn;
@@ -19,7 +23,7 @@ public:
 
   bool drawUI = false;
 
-  Store() {
+  Store(Game &g_) : game(g_) {
     StoreBtn.setFillColor(sf::Color(201, 134, 40));
     StoreBtn.m_text.setString("Store?");
     StoreBtn.setSize({StoreBtn.m_text.getGlobalBounds().width + 10, 100});
@@ -32,8 +36,8 @@ public:
     BuyBtn.m_text.setString("Buy?");
     BuyBtn.setSize({BuyBtn.m_text.getGlobalBounds().width + 10, 50});
     StoreBtn.onClick = [&]() { drawUI = !drawUI; };
-    BuyBtn.onClick = [&]() {
-    
+    BuyBtn.onClick = [this]() {
+      game.BuyBattery();
     };
   }
 

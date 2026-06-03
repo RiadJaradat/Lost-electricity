@@ -7,7 +7,6 @@
 #include "farm.hpp"
 #include "island.hpp"
 #include "Harvester.hpp"
-#include "HUD.hpp"
 #include "Time.hpp"
 #include "Text.hpp"
 #include "World.hpp"
